@@ -40,15 +40,16 @@ public class PlayerMove : MonoBehaviour
     //캐릭터 멈춤 변수 플래그
     private bool stopMove = false;
 
+    public float hp = 3f;
 
     [Header("애니메이션 속성")]
     public AnimationClip animationClipIdle = null;
     public AnimationClip animationClipWalk = null;
     public AnimationClip animationClipRun = null;
     public AnimationClip animationClipAtkStep_1 = null;
-    public AnimationClip animationClipAtkStep_2 = null;
-    public AnimationClip animationClipAtkStep_3 = null;
-    public AnimationClip animationClipAtkStep_4 = null;
+    //public AnimationClip animationClipAtkStep_2 = null;
+    //public AnimationClip animationClipAtkStep_3 = null;
+    //public AnimationClip animationClipAtkStep_4 = null;
 
     //컴포넌트도 필요합니다 
     private Animation animationPlayer = null;
@@ -61,7 +62,7 @@ public class PlayerMove : MonoBehaviour
     public PlayerState playerState = PlayerState.None;
 
     //공격 sub state 추가 
-    public enum PlayerAttackState { atkStep_1, atkStep_2, atkStep_3, atkStep_4 }
+    public enum PlayerAttackState { atkStep_1/*atkStep_2, atkStep_3, atkStep_4 */}
 
     //기본 공격 상태 값 추가 
     public PlayerAttackState playerAttackState = PlayerAttackState.atkStep_1;
@@ -70,7 +71,17 @@ public class PlayerMove : MonoBehaviour
     public bool flagNextAttack = false;
 
 
+    //[Header("전투관련")]
+    ////공격할 때만 켜지게
+    //public TrailRenderer AtkTrailRenderer = null;
 
+    //무기에 있는 콜라이더 캐싱
+    public CapsuleCollider AtkCapsuleCollider = null;
+
+
+    //[Header("스킬관련")]
+    //public AnimationClip skillAnimClip = null;
+    //public GameObject skillEffect = null;
 
 
     // Start is called before the first frame update
@@ -94,19 +105,19 @@ public class PlayerMove : MonoBehaviour
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipAtkStep_1.name].wrapMode = WrapMode.Once;
-        animationPlayer[animationClipAtkStep_2.name].wrapMode = WrapMode.Once;
-        animationPlayer[animationClipAtkStep_3.name].wrapMode = WrapMode.Once;
-        animationPlayer[animationClipAtkStep_4.name].wrapMode = WrapMode.Once;
+        //animationPlayer[animationClipAtkStep_2.name].wrapMode = WrapMode.Once;
+        //animationPlayer[animationClipAtkStep_3.name].wrapMode = WrapMode.Once;
+        //animationPlayer[animationClipAtkStep_4.name].wrapMode = WrapMode.Once;
 
-
+        //animationPlayer[skillAnimClip.name].wrapMode = WrapMode.Once;
 
         //이벤트 함수 지정 
         SetAnimationEvent(animationClipAtkStep_1, "OnPlayerAttackFinshed");
-        SetAnimationEvent(animationClipAtkStep_2, "OnPlayerAttackFinshed");
-        SetAnimationEvent(animationClipAtkStep_3, "OnPlayerAttackFinshed");
-        SetAnimationEvent(animationClipAtkStep_4, "OnPlayerAttackFinshed");
+        //SetAnimationEvent(animationClipAtkStep_2, "OnPlayerAttackFinshed");
+        //SetAnimationEvent(animationClipAtkStep_3, "OnPlayerAttackFinshed");
+        //SetAnimationEvent(animationClipAtkStep_4, "OnPlayerAttackFinshed");
 
-
+        //SetAnimationEvent(skillAnimClip, "OnSkillAnimFinished");
     }
 
     // Update is called once per frame
@@ -131,6 +142,7 @@ public class PlayerMove : MonoBehaviour
         setGravity();
 
         //공격관련 컴포넌트 제어
+        AtkComponentCtrl();
     }
 
     /// <summary>
@@ -164,7 +176,14 @@ public class PlayerMove : MonoBehaviour
         vecMoveDirection = vecMoveDirection.normalized;
         //캐릭터 이동 속도
         float spd = walkMoveSpd;
-
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            playerState = PlayerState.Run;
+        }
+        if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            playerState = PlayerState.Walk;
+        }
         //만약에 playerState가 Run이면 
         if (playerState == PlayerState.Run)
         {
@@ -219,11 +238,13 @@ public class PlayerMove : MonoBehaviour
 	/// </summary>
     private void OnGUI()
     {
-        if (controllerCharacter != null && controllerCharacter.velocity != Vector3.zero)
-        {
-            var labelStyle = new GUIStyle();
-            labelStyle.fontSize = 50;
-            labelStyle.normal.textColor = Color.white;
+        var labelStyle = new GUIStyle();
+        labelStyle.fontSize = 10;
+        labelStyle.normal.textColor = Color.black;
+
+        //if (controllerCharacter != null && controllerCharacter.velocity != Vector3.zero)
+        //{
+
             //캐릭터 현재 속도
             float _getVelocitySpd = getNowVelocityVal();
             GUILayout.Label("현재속도 : " + _getVelocitySpd.ToString(), labelStyle);
@@ -234,7 +255,10 @@ public class PlayerMove : MonoBehaviour
             //현재  재백터 크기 속도
             GUILayout.Label("현재백터 크기 속도 : " + vecNowVelocity.magnitude.ToString(), labelStyle);
 
-        }
+
+
+        //}
+        GUILayout.Label("현재 HP : " + hp.ToString(), labelStyle);
     }
     /// <summary>
     /// 캐릭터 몸통 벡터 방향 함수
@@ -289,6 +313,10 @@ public class PlayerMove : MonoBehaviour
                 //공격상태에 맞춘 애니메이션을 재생
                 AtkAnimationCrtl();
                 break;
+            case PlayerState.Skill:
+                //playAnimationByClip(skillAnimClip);
+                //stopMove = true;
+                break;
         }
     }
 
@@ -311,7 +339,7 @@ public class PlayerMove : MonoBehaviour
                 break;
             case PlayerState.Walk:
                 //2.0 걷기 max 속도
-                if (nowSpd > 2.0f)
+                if (nowSpd > runMoveSpd-1f)
                 {
                     playerState = PlayerState.Run;
                 }
@@ -368,24 +396,24 @@ public class PlayerMove : MonoBehaviour
                             flagNextAttack = true;
                         }
                         break;
-                    case PlayerAttackState.atkStep_2:
-                        if (animationPlayer[animationClipAtkStep_2.name].normalizedTime > 0.05f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
-                    case PlayerAttackState.atkStep_3:
-                        if (animationPlayer[animationClipAtkStep_3.name].normalizedTime > 0.5f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
-                    case PlayerAttackState.atkStep_4:
-                        if (animationPlayer[animationClipAtkStep_4.name].normalizedTime > 0.5f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
+                    //case PlayerAttackState.atkStep_2:
+                    //    if (animationPlayer[animationClipAtkStep_2.name].normalizedTime > 0.05f)
+                    //    {
+                    //        flagNextAttack = true;
+                    //    }
+                    //    break;
+                    //case PlayerAttackState.atkStep_3:
+                    //    if (animationPlayer[animationClipAtkStep_3.name].normalizedTime > 0.5f)
+                    //    {
+                    //        flagNextAttack = true;
+                    //    }
+                    //    break;
+                    //case PlayerAttackState.atkStep_4:
+                    //    if (animationPlayer[animationClipAtkStep_4.name].normalizedTime > 0.5f)
+                    //    {
+                    //        flagNextAttack = true;
+                    //    }
+                    //    break;
                     default:
                         break;
                 }
@@ -418,7 +446,8 @@ public class PlayerMove : MonoBehaviour
         //캐릭터 앞 방향 2.0정도 떨어진 거리 
         pos += transform.forward * 2f;
 
-
+        ////그 위치에 스킬 이펙트를 붙인다. 
+        //Instantiate(skillEffect, pos, Quaternion.identity);
 
         //끝났으면 대기 상태로 둔다. 
         playerState = PlayerState.Idle;
@@ -442,24 +471,24 @@ public class PlayerMove : MonoBehaviour
             Debug.Log(playerAttackState);
 
             //현재 공격 애니매이션 상태에 따른 다음 애니매이션 상태값을 넣기
-            switch (playerAttackState)
-            {
+            //switch (playerAttackState)
+            //{
 
-                case PlayerAttackState.atkStep_1:
-                    playerAttackState = PlayerAttackState.atkStep_2;
+            //    case PlayerAttackState.atkStep_1:
+            //        playerAttackState = PlayerAttackState.atkStep_2;
 
-                    Debug.Log(playerAttackState);
-                    break;
-                case PlayerAttackState.atkStep_2:
-                    playerAttackState = PlayerAttackState.atkStep_3;
-                    break;
-                case PlayerAttackState.atkStep_3:
-                    playerAttackState = PlayerAttackState.atkStep_4;
-                    break;
-                case PlayerAttackState.atkStep_4:
-                    playerAttackState = PlayerAttackState.atkStep_1;
-                    break;
-            }
+            //        Debug.Log(playerAttackState);
+            //        break;
+            //    case PlayerAttackState.atkStep_2:
+            //        playerAttackState = PlayerAttackState.atkStep_3;
+            //        break;
+            //    case PlayerAttackState.atkStep_3:
+            //        playerAttackState = PlayerAttackState.atkStep_4;
+            //        break;
+            //    case PlayerAttackState.atkStep_4:
+            //        playerAttackState = PlayerAttackState.atkStep_1;
+            //        break;
+            //}
         }
         else
         {
@@ -501,15 +530,15 @@ public class PlayerMove : MonoBehaviour
             case PlayerAttackState.atkStep_1:
                 playAnimationByClip(animationClipAtkStep_1);
                 break;
-            case PlayerAttackState.atkStep_2:
-                playAnimationByClip(animationClipAtkStep_2);
-                break;
-            case PlayerAttackState.atkStep_3:
-                playAnimationByClip(animationClipAtkStep_3);
-                break;
-            case PlayerAttackState.atkStep_4:
-                playAnimationByClip(animationClipAtkStep_4);
-                break;
+            //case PlayerAttackState.atkStep_2:
+            //    playAnimationByClip(animationClipAtkStep_2);
+            //    break;
+            //case PlayerAttackState.atkStep_3:
+            //    playAnimationByClip(animationClipAtkStep_3);
+            //    break;
+            //case PlayerAttackState.atkStep_4:
+            //    playAnimationByClip(animationClipAtkStep_4);
+            //    break;
         }
     }
 
@@ -531,19 +560,19 @@ public class PlayerMove : MonoBehaviour
     /// <summary>
     /// 공격관련 컴포넌트 제어
     /// </summary>
-    //void AtkComponentCtrl()
-    //{
-    //    switch (playerState)
-    //    {
-    //        case PlayerState.Attack:
-    //        case PlayerState.Skill:
-    //            AtkTrailRenderer.enabled = true;
-    //            AtkCapsuleCollider.enabled = true;
-    //            break;
-    //        default:
-    //            AtkTrailRenderer.enabled = false;
-    //            AtkCapsuleCollider.enabled = false;
-    //            break;
-    //    }
-    //}
+    void AtkComponentCtrl()
+    {
+        switch (playerState)
+        {
+            case PlayerState.Attack:    
+            case PlayerState.Skill:
+                //AtkTrailRenderer.enabled = true;
+                AtkCapsuleCollider.enabled = true;
+                break;
+            default:
+                //AtkTrailRenderer.enabled = false;
+                AtkCapsuleCollider.enabled = false;
+                break;
+        }
+    }
 }
