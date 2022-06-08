@@ -370,6 +370,7 @@ public class GuGuCtrl : MonoBehaviour
         }
     }
 
+
     /// <summary>
     /// 피격시 몬스터 몸에서 번쩍번쩍 효과를 준다
     /// </summary>

@@ -47,7 +47,7 @@ public class PlayerMove : MonoBehaviour
     public AnimationClip animationClipWalk = null;
     public AnimationClip animationClipRun = null;
     public AnimationClip animationClipAtkStep_1 = null;
-    //public AnimationClip animationClipAtkStep_2 = null;
+    public AnimationClip animationClipAtkStep_2 = null;
     //public AnimationClip animationClipAtkStep_3 = null;
     //public AnimationClip animationClipAtkStep_4 = null;
 
@@ -62,7 +62,7 @@ public class PlayerMove : MonoBehaviour
     public PlayerState playerState = PlayerState.None;
 
     //공격 sub state 추가 
-    public enum PlayerAttackState { atkStep_1/*atkStep_2, atkStep_3, atkStep_4 */}
+    public enum PlayerAttackState { atkStep_1,atkStep_2, /*atkStep_3, atkStep_4*/ }
 
     //기본 공격 상태 값 추가 
     public PlayerAttackState playerAttackState = PlayerAttackState.atkStep_1;
@@ -105,7 +105,7 @@ public class PlayerMove : MonoBehaviour
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipAtkStep_1.name].wrapMode = WrapMode.Once;
-        //animationPlayer[animationClipAtkStep_2.name].wrapMode = WrapMode.Once;
+        animationPlayer[animationClipAtkStep_2.name].wrapMode = WrapMode.Once;
         //animationPlayer[animationClipAtkStep_3.name].wrapMode = WrapMode.Once;
         //animationPlayer[animationClipAtkStep_4.name].wrapMode = WrapMode.Once;
 
@@ -113,7 +113,7 @@ public class PlayerMove : MonoBehaviour
 
         //이벤트 함수 지정 
         SetAnimationEvent(animationClipAtkStep_1, "OnPlayerAttackFinshed");
-        //SetAnimationEvent(animationClipAtkStep_2, "OnPlayerAttackFinshed");
+        SetAnimationEvent(animationClipAtkStep_2, "OnPlayerAttackFinshed");
         //SetAnimationEvent(animationClipAtkStep_3, "OnPlayerAttackFinshed");
         //SetAnimationEvent(animationClipAtkStep_4, "OnPlayerAttackFinshed");
 
@@ -396,12 +396,12 @@ public class PlayerMove : MonoBehaviour
                             flagNextAttack = true;
                         }
                         break;
-                    //case PlayerAttackState.atkStep_2:
-                    //    if (animationPlayer[animationClipAtkStep_2.name].normalizedTime > 0.05f)
-                    //    {
-                    //        flagNextAttack = true;
-                    //    }
-                    //    break;
+                    case PlayerAttackState.atkStep_2:
+                        if (animationPlayer[animationClipAtkStep_2.name].normalizedTime > 0.05f)
+                        {
+                            flagNextAttack = true;
+                        }
+                        break;
                     //case PlayerAttackState.atkStep_3:
                     //    if (animationPlayer[animationClipAtkStep_3.name].normalizedTime > 0.5f)
                     //    {
@@ -530,15 +530,15 @@ public class PlayerMove : MonoBehaviour
             case PlayerAttackState.atkStep_1:
                 playAnimationByClip(animationClipAtkStep_1);
                 break;
-            //case PlayerAttackState.atkStep_2:
-            //    playAnimationByClip(animationClipAtkStep_2);
-            //    break;
-            //case PlayerAttackState.atkStep_3:
-            //    playAnimationByClip(animationClipAtkStep_3);
-            //    break;
-            //case PlayerAttackState.atkStep_4:
-            //    playAnimationByClip(animationClipAtkStep_4);
-            //    break;
+            case PlayerAttackState.atkStep_2:
+                playAnimationByClip(animationClipAtkStep_2);
+                break;
+                //case PlayerAttackState.atkStep_3:
+                //    playAnimationByClip(animationClipAtkStep_3);
+                //    break;
+                //case PlayerAttackState.atkStep_4:
+                //    playAnimationByClip(animationClipAtkStep_4);
+                //    break;
         }
     }
 
