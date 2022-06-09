@@ -400,12 +400,12 @@ public class PlayerMove : MonoBehaviour
                             flagNextAttack = true;
                         }
                         break;
-                    case PlayerAttackState.atkStep_2:
-                        if (animationPlayer[animationClipAtkStep_2.name].normalizedTime > 0.05f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
+                    //case PlayerAttackState.atkStep_2:
+                    //    if (animationPlayer[animationClipAtkStep_2.name].normalizedTime > 0.05f)
+                    //    {
+                    //        flagNextAttack = true;
+                    //    }
+                    //    break;
                     //case PlayerAttackState.atkStep_3:
                     //    if (animationPlayer[animationClipAtkStep_3.name].normalizedTime > 0.5f)
                     //    {
@@ -534,9 +534,9 @@ public class PlayerMove : MonoBehaviour
             case PlayerAttackState.atkStep_1:
                 playAnimationByClip(animationClipAtkStep_1);
                 break;
-            case PlayerAttackState.atkStep_2:
-                playAnimationByClip(animationClipAtkStep_2);
-                break;
+            //case PlayerAttackState.atkStep_2:
+            //    playAnimationByClip(animationClipAtkStep_2);
+            //    break;
                 //case PlayerAttackState.atkStep_3:
                 //    playAnimationByClip(animationClipAtkStep_3);
                 //    break;

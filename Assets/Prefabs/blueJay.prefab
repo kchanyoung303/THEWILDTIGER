@@ -2114,10 +2114,10 @@ Animation:
   m_Animation: {fileID: 0}
   m_Animations:
   - {fileID: 7400000, guid: fcd9e2f0fe594944fa820d71162634f0, type: 3}
-  - {fileID: 7400000, guid: 62a99fa6a6de34a43bcad78c98a2166d, type: 3}
-  - {fileID: 7400000, guid: cfade936808e440439bff42525f9f2aa, type: 3}
-  - {fileID: 7400000, guid: 3eb26f964a8a1f442b4ebaad1c690121, type: 3}
   - {fileID: 7400000, guid: f2dcbf14324d47a499783221451475c6, type: 3}
+  - {fileID: 7400000, guid: cfade936808e440439bff42525f9f2aa, type: 3}
+  - {fileID: 7400000, guid: 62a99fa6a6de34a43bcad78c98a2166d, type: 3}
+  - {fileID: 7400000, guid: 3eb26f964a8a1f442b4ebaad1c690121, type: 3}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -2144,7 +2144,7 @@ MonoBehaviour:
   AtkAnimClip: {fileID: 7400000, guid: cfade936808e440439bff42525f9f2aa, type: 3}
   DamageAnimClip: {fileID: 7400000, guid: 62a99fa6a6de34a43bcad78c98a2166d, type: 3}
   DieAnimClip: {fileID: 7400000, guid: 3eb26f964a8a1f442b4ebaad1c690121, type: 3}
-  hp: 19
+  hp: 20
   AtkRange: 1.5
   effectDamage: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
   effectDie: {fileID: 2955623459812423943, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}

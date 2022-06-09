@@ -9,6 +9,8 @@ public class GuGuCtrl : MonoBehaviour
     //해골 상태
     public enum SkullState { None, Idle, Move, Wait, GoTarget, Atk, Damage, Die }
 
+
+    public float DelaySecond = 0.60f;
     //해골 기본 속성
     [Header("기본 속성")]
     //해골 초기 상태
@@ -59,12 +61,9 @@ public class GuGuCtrl : MonoBehaviour
     void OnDieAnmationFinished()
     {
         Debug.Log("Die Animation finished");
+        effectDamageTween();
 
-        //몬스터 죽음 이벤트 
-        Instantiate(effectDie, skullTransform.position, Quaternion.identity);
 
-        //몬스터 삭제 
-        Destroy(gameObject);
     }
 
     /// <summary>
@@ -158,7 +157,7 @@ public class GuGuCtrl : MonoBehaviour
                 );
             Ray ray = new Ray(posTarget, Vector3.down);
             RaycastHit infoRayCast = new RaycastHit();
-            if (Physics.Raycast(ray, out infoRayCast, 15f) == true)
+            if (Physics.Raycast(ray, out infoRayCast, Mathf.Infinity) == true)
             {
                 posTarget.y = infoRayCast.point.y;
             }
@@ -284,16 +283,18 @@ public class GuGuCtrl : MonoBehaviour
             case SkullState.GoTarget:
                 //이동 애니메이션 실행
                 skullAnimation.CrossFade(MoveAnimClip.name);
+                Debug.Log("Anemy Move");
                 break;
             //공격할 때
             case SkullState.Atk:
+                Debug.Log(AtkAnimClip.name);
                 //공격 애니메이션 실행
                 skullAnimation.CrossFade(AtkAnimClip.name);
                 break;
             //죽었을 때
             case SkullState.Die:
                 //죽을 때도 애니메이션 실행
-                skullAnimation.CrossFade(DieAnimClip.name);
+ 
                 break;
             default:
                 break;
@@ -349,8 +350,7 @@ public class GuGuCtrl : MonoBehaviour
             if (hp > 0)
             {
                 //피격 이펙트 
-
-                Instantiate(effectDamage, other.transform.position, Quaternion.identity);
+                Instantiate(effectDamage, transform.position, Quaternion.identity);
 
                 //체력이 0 이상이면 피격 애니메이션을 연출 하고 
                 skullAnimation.CrossFade(DamageAnimClip.name);
@@ -360,11 +360,19 @@ public class GuGuCtrl : MonoBehaviour
             }
             else
             {
-                effectDamageTween();
+
                 //0 보다 작으면 해골이 죽음 상태로 바꾸어라  
+                skullAnimation.CrossFade(DieAnimClip.name);
                 skullState = SkullState.Die;
+                EnemyDieDelay();
             }
         }
+    }
+    IEnumerator EnemyDieDelay()
+    {
+        yield return new WaitForSeconds(DelaySecond);
+
+        OnDieAnmationFinished();
     }
 
 
@@ -373,14 +381,30 @@ public class GuGuCtrl : MonoBehaviour
     /// </summary>
     void effectDamageTween()
     {
-        //트윈을 돌리다 또 트윈 함수가 진행되면 로직이 엉망이 될 수 있어서 
-        //트윈 중복 체크로 미리 차단을 해준다
 
-        //번쩍이는 이펙트 색상을 지정해준다
-        Color colorTo = Color.red;
-        
 
-        skinnedMeshRenderer.material.DOColor(colorTo, 0f).OnComplete(OnDamageTweenFinished);
+
+        if(hp>0)
+
+        {
+            //트윈을 돌리다 또 트윈 함수가 진행되면 로직이 엉망이 될 수 있어서 
+            //트윈 중복 체크로 미리 차단을 해준다
+
+            //번쩍이는 이펙트 색상을 지정해준다
+            Color colorTo = Color.red;
+
+
+            skinnedMeshRenderer.material.DOColor(colorTo, 0f).OnComplete(OnDamageTweenFinished);
+
+        }
+        else
+        {
+            //몬스터 죽음 이벤트 
+            Instantiate(effectDie, skullTransform.position, Quaternion.identity);
+
+            //몬스터 삭제 
+            Destroy(gameObject);
+        }
     }
 
     /// <summary>
