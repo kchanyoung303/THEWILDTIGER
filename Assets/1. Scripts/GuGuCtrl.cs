@@ -45,8 +45,7 @@ public class GuGuCtrl : MonoBehaviour
     public GameObject effectDie = null;
 
     private SkinnedMeshRenderer skinnedMeshRenderer = null;
-
-    private PlayerMove playermove = null;
+    
     void OnAtkAnmationFinished()
     {
         Debug.Log("Atk Animation finished");
@@ -89,8 +88,6 @@ public class GuGuCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        playermove = GetComponent<PlayerMove>();
         //처음 상태 대기상태
         skullState = SkullState.Idle;
 

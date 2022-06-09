@@ -145,6 +145,10 @@ public class PlayerMove : MonoBehaviour
         AtkComponentCtrl();
     }
 
+    void GetDamege(int Damege)
+    {
+        hp -= Damege;
+    }
     /// <summary>
     /// 이동함수 입니다 캐릭터
     /// </summary>
