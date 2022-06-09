@@ -7,7 +7,7 @@ using DG.Tweening;
 public class GuGuCtrl : MonoBehaviour
 {
     //해골 상태
-    public enum SkullState { None, Idle, Move, Wait, GoTarget, Atk, Damage, Die }
+    public enum SkullState { None, Idle, Move, Wait, runAwayTarget, Atk, Damage, Die }
 
 
     public float DelaySecond = 0.60f;
@@ -16,7 +16,10 @@ public class GuGuCtrl : MonoBehaviour
     //해골 초기 상태
     public SkullState skullState = SkullState.None;
     //해골 이동 속도
+
+    private float spd;
     public float spdMove = 1f;
+    public float runAwaySpd = 15f;
     //해골이 본 타겟
     public GameObject targetCharactor = null;
     //해골이 본 타겟 위치정보 (매번 안 찾을려고)
@@ -125,12 +128,9 @@ public class GuGuCtrl : MonoBehaviour
                 //이동에 관련된 RayCast값
                 setIdle();
                 break;
-            case SkullState.GoTarget:
+            case SkullState.runAwayTarget:
             case SkullState.Move:
                 setMove();
-                break;
-            case SkullState.Atk:
-                setAtk();
                 break;
             default:
                 break;
@@ -165,7 +165,7 @@ public class GuGuCtrl : MonoBehaviour
         }
         else
         {
-            skullState = SkullState.GoTarget;
+            skullState = SkullState.runAwayTarget;
         }
     }
 
@@ -179,6 +179,7 @@ public class GuGuCtrl : MonoBehaviour
         //어느 방향을 바라보고 가고 있느냐 
         Vector3 posLookAt = Vector3.zero;
 
+        spd = spdMove;
         //해골 상태
         switch (skullState)
         {
@@ -207,12 +208,13 @@ public class GuGuCtrl : MonoBehaviour
                 }
                 break;
             //캐릭터를 향해서 가는 돌아다니는  경우
-            case SkullState.GoTarget:
+            case SkullState.runAwayTarget:
+                spd = runAwaySpd;
                 //목표 캐릭터가 있을 땟
                 if (targetCharactor != null)
                 {
                     //목표 위치에서 해골 있는 위치 차를 구하고
-                    distance = targetCharactor.transform.position - skullTransform.position;
+                    distance = -targetCharactor.transform.position - skullTransform.position;
                     //만약에 움직이는 동안 해골이 목표로 한 지점 보다 작으 
                     if (distance.magnitude < AtkRange)
                     {
@@ -222,10 +224,10 @@ public class GuGuCtrl : MonoBehaviour
                         return;
                     }
                     //어느 방향을 바라 볼 것인. 랜덤 지역
-                    posLookAt = new Vector3(targetCharactor.transform.position.x,
+                    posLookAt = new Vector3(-targetCharactor.transform.position.x,
                                             //타겟이 높이 있을 경우가 있으니 y값 체크
                                             skullTransform.position.y,
-                                            targetCharactor.transform.position.z);
+                                            -targetCharactor.transform.position.z);
                 }
                 break;
             default:
@@ -240,7 +242,7 @@ public class GuGuCtrl : MonoBehaviour
         direction = new Vector3(direction.x, 0f, direction.z);
 
         //이동량 방향 구하기
-        Vector3 amount = direction * spdMove * Time.deltaTime;
+        Vector3 amount = direction * spd * Time.deltaTime;
 
         //캐릭터 컨트롤이 아닌 트랜스폼으로 월드 좌표 이용하여 이동
         skullTransform.Translate(amount, Space.World);
@@ -280,7 +282,7 @@ public class GuGuCtrl : MonoBehaviour
                 break;
             //랜덤과 목표 이동할 때 애니메이션 같.
             case SkullState.Move:
-            case SkullState.GoTarget:
+            case SkullState.runAwayTarget:
                 //이동 애니메이션 실행
                 skullAnimation.CrossFade(MoveAnimClip.name);
                 Debug.Log("Anemy Move");
@@ -314,26 +316,20 @@ public class GuGuCtrl : MonoBehaviour
         //목표 위치에 목표 캐릭터의 위치 값을 넣습니다. 
         targetTransform = targetCharactor.transform;
 
+        spd = runAwaySpd;
         //목표물을 향해 해골이 이동하는 상태로 변경
-        skullState = SkullState.GoTarget;
+        skullState = SkullState.runAwayTarget;
 
+        ReturnSpd();
     }
 
-    /// <summary>
-    /// 해골 상태 공격 모드
-    /// </summary>
-    void setAtk()
+    IEnumerator ReturnSpd()
     {
-        //해골과 캐릭터간의 위치 거리 
-        float distance = Vector3.Distance(targetTransform.position, skullTransform.position); //무겁다
-
-        //공격 거리보다 둘 간의 거리가 멀어 졌다면 
-        if (distance > AtkRange + 0.5f)
-        {
-            //타겟과의 거리가 멀어졌다면 타겟으로 이동 
-            skullState = SkullState.GoTarget;
-        }
+        yield return new WaitForSeconds(5f);
+        spd = spdMove;
     }
+
+
 
 
     /// <summary>
