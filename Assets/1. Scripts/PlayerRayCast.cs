@@ -10,7 +10,10 @@ public class PlayerRayCast : MonoBehaviour
 
         if(Physics.Raycast(this.transform.position,this.transform.up,out hit,5f))
         {
-
+            if(hit.transform.name == "Box")
+            {
+                Destroy(hit.transform.gameObject);
+            }
         }
     }
 }
