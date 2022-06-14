@@ -2175,7 +2175,6 @@ Animation:
   m_Animations:
   - {fileID: 7400000, guid: fcd9e2f0fe594944fa820d71162634f0, type: 3}
   - {fileID: 7400000, guid: f2dcbf14324d47a499783221451475c6, type: 3}
-  - {fileID: 7400000, guid: cfade936808e440439bff42525f9f2aa, type: 3}
   - {fileID: 7400000, guid: 62a99fa6a6de34a43bcad78c98a2166d, type: 3}
   - {fileID: 7400000, guid: 3eb26f964a8a1f442b4ebaad1c690121, type: 3}
   m_WrapMode: 0
@@ -2194,15 +2193,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7c6cfe0756e7d43b8b018b5b8865c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropfood: {fileID: 4446042087989776518, guid: fdf19312d22c047f7b92ac36a4ac658d, type: 3}
+  food: []
   DelaySecond: 0.6
   skullState: 1
   spdMove: 1
+  runAwaySpd: 15
   targetCharactor: {fileID: 0}
   targetTransform: {fileID: 0}
   posTarget: {x: 0, y: 0, z: 0}
   IdleAnimClip: {fileID: 7400000, guid: fcd9e2f0fe594944fa820d71162634f0, type: 3}
   MoveAnimClip: {fileID: 7400000, guid: f2dcbf14324d47a499783221451475c6, type: 3}
-  AtkAnimClip: {fileID: 7400000, guid: cfade936808e440439bff42525f9f2aa, type: 3}
   DamageAnimClip: {fileID: 7400000, guid: 62a99fa6a6de34a43bcad78c98a2166d, type: 3}
   DieAnimClip: {fileID: 7400000, guid: 3eb26f964a8a1f442b4ebaad1c690121, type: 3}
   hp: 20

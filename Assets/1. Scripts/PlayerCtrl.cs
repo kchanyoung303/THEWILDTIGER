@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMove : MonoBehaviour
+public class PlayerCtrl : MonoBehaviour
 {
     //캐릭터 직선 이동 속도 (걷기)
     public float walkMoveSpd = 2.0f;
@@ -243,7 +243,7 @@ public class PlayerMove : MonoBehaviour
     private void OnGUI()
     {
         var labelStyle = new GUIStyle();
-        labelStyle.fontSize = 10;
+        labelStyle.fontSize = 15;
         labelStyle.normal.textColor = Color.black;
 
         //if (controllerCharacter != null && controllerCharacter.velocity != Vector3.zero)

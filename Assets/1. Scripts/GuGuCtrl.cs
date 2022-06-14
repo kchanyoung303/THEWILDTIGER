@@ -7,10 +7,12 @@ using DG.Tweening;
 public class GuGuCtrl : MonoBehaviour
 {
     //해골 상태
-    public enum SkullState { None, Idle, Move, Wait, runAwayTarget, Atk, Damage, Die }
+    public GameObject dropfood;
+    public List<GameObject> food = new List<GameObject>();
+    public enum SkullState { None, Idle, Move, Wait, runAwayTarget,Damage, Die }
 
 
-    public float DelaySecond = 0.60f;
+    public float DelaySecond = 1f;
     //해골 기본 속성
     [Header("기본 속성")]
     //해골 초기 상태
@@ -35,7 +37,6 @@ public class GuGuCtrl : MonoBehaviour
     [Header("애니메이션 클립")]
     public AnimationClip IdleAnimClip = null;
     public AnimationClip MoveAnimClip = null;
-    public AnimationClip AtkAnimClip = null;
     public AnimationClip DamageAnimClip = null;
     public AnimationClip DieAnimClip = null;
 
@@ -51,23 +52,11 @@ public class GuGuCtrl : MonoBehaviour
 
     private SkinnedMeshRenderer skinnedMeshRenderer = null;
     
-    void OnAtkAnmationFinished()
-    {
-        Debug.Log("Atk Animation finished");
-    }
-
     void OnDmgAnmationFinished()
     {
         Debug.Log("Dmg Animation finished");
     }
 
-    void OnDieAnmationFinished()
-    {
-        Debug.Log("Die Animation finished");
-        effectDamageTween();
-
-
-    }
 
     /// <summary>
     /// 애니메이션 이벤트를 추가해주는 함. 
@@ -100,7 +89,7 @@ public class GuGuCtrl : MonoBehaviour
         //애니메이션 클립 재생 모드 비중
         skullAnimation[IdleAnimClip.name].wrapMode = WrapMode.Loop;
         skullAnimation[MoveAnimClip.name].wrapMode = WrapMode.Loop;
-        skullAnimation[AtkAnimClip.name].wrapMode = WrapMode.Once;
+
         skullAnimation[DamageAnimClip.name].wrapMode = WrapMode.Once;
 
         //애니메이션 블랜딩 위해 크게 올림
@@ -109,10 +98,7 @@ public class GuGuCtrl : MonoBehaviour
         skullAnimation[DieAnimClip.name].layer = 10;
 
         //공격 애니메이션 이벤트 추가
-        OnAnimationEvent(AtkAnimClip, "OnAtkAnmationFinished");
         OnAnimationEvent(DamageAnimClip, "OnDmgAnmationFinished");
-        OnAnimationEvent(DieAnimClip, "OnDieAnmationFinished");
-
         //스킨매쉬 캐싱
         skinnedMeshRenderer = skullTransform.Find("bluejay").GetComponent<SkinnedMeshRenderer>();
     }
@@ -218,8 +204,6 @@ public class GuGuCtrl : MonoBehaviour
                     //만약에 움직이는 동안 해골이 목표로 한 지점 보다 작으 
                     if (distance.magnitude < AtkRange)
                     {
-                        //공격상태로 변경합니.
-                        skullState = SkullState.Atk;
                         //여기서 끝냄
                         return;
                     }
@@ -285,12 +269,6 @@ public class GuGuCtrl : MonoBehaviour
             case SkullState.runAwayTarget:
                 //이동 애니메이션 실행
                 skullAnimation.CrossFade(MoveAnimClip.name);
-                break;
-            //공격할 때
-            case SkullState.Atk:
-                Debug.Log(AtkAnimClip.name);
-                //공격 애니메이션 실행
-                skullAnimation.CrossFade(AtkAnimClip.name);
                 break;
             //죽었을 때
             case SkullState.Die:
@@ -359,15 +337,22 @@ public class GuGuCtrl : MonoBehaviour
                 //0 보다 작으면 해골이 죽음 상태로 바꾸어라  
                 skullAnimation.CrossFade(DieAnimClip.name);
                 skullState = SkullState.Die;
-                EnemyDieDelay();
+
+                StartCoroutine("DieDelay");
+
             }
         }
     }
-    IEnumerator EnemyDieDelay()
+    IEnumerator DieDelay()
     {
         yield return new WaitForSeconds(DelaySecond);
+        //몬스터 죽음 이벤트 
+        Instantiate(effectDie, skullTransform.position, Quaternion.identity);
 
-        OnDieAnmationFinished();
+        //몬스터 삭제 
+        Destroy(gameObject);
+
+        Instantiate(dropfood, transform.position + Vector3.up * 0.5f, Quaternion.identity);
     }
 
 
@@ -397,8 +382,11 @@ public class GuGuCtrl : MonoBehaviour
             //몬스터 죽음 이벤트 
             Instantiate(effectDie, skullTransform.position, Quaternion.identity);
 
+
             //몬스터 삭제 
             Destroy(gameObject);
+
+
         }
     }
 

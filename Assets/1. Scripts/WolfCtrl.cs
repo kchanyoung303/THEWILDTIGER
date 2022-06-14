@@ -6,8 +6,10 @@ using DG.Tweening;
 public class WolfCtrl : MonoBehaviour
 {
     //해골 상태
+    public GameObject dropfood;
+    public List<GameObject> food = new List<GameObject>();
     public enum SkullState { None, Idle, Move, Wait, GoTarget, Atk, Damage, Die }
-    public float DelaySecond = 1f;
+    public float DelaySecond = 1.2f;
 
     //해골 기본 속성
     [Header("기본 속성")]
@@ -58,12 +60,7 @@ public class WolfCtrl : MonoBehaviour
         Debug.Log("Dmg Animation finished");
     }
 
-    void OnDieAnmationFinished()
-    {
-        Debug.Log("Die Animation finished");
 
-        effectDamageTween();
-    }
 
     /// <summary>
     /// 애니메이션 이벤트를 추가해주는 함. 
@@ -77,7 +74,7 @@ public class WolfCtrl : MonoBehaviour
         //애니메이션 이벤트에 호출 시킬 함수명
         retEvent.functionName = funcName;
         //애니메이션 클립 끝나기 바로 직전에 호출
-        retEvent.time = clip.length - 0.1f;
+        retEvent.time = clip.length - 0.4f;
         //위 내용을 이벤트에 추가 하여라
         clip.AddEvent(retEvent);
     }
@@ -107,10 +104,9 @@ public class WolfCtrl : MonoBehaviour
         //공격 애니메이션 이벤트 추가
         OnAnimationEvent(AtkAnimClip, "OnAtkAnmationFinished");
         OnAnimationEvent(DamageAnimClip, "OnDmgAnmationFinished");
-        OnAnimationEvent(DieAnimClip, "OnDieAnmationFinished");
 
         //스킨매쉬 캐싱
-        skinnedMeshRenderer = skullTransform.Find("Wolf 1").GetComponent<SkinnedMeshRenderer>();
+        skinnedMeshRenderer = this.skullTransform.Find("Wolf 1").GetComponent<SkinnedMeshRenderer>();
     }
 
     /// <summary>
@@ -362,18 +358,22 @@ public class WolfCtrl : MonoBehaviour
                 //0 보다 작으면 해골이 죽음 상태로 바꾸어라  
                 skullAnimation.CrossFade(DieAnimClip.name);
                 skullState = SkullState.Die;
-                EnemyDieDelay();
+                StartCoroutine("DieDelay");
+
             }
         }
     }
-    IEnumerator EnemyDieDelay()
+    IEnumerator DieDelay()
     {
         yield return new WaitForSeconds(DelaySecond);
+        //몬스터 죽음 이벤트 
+        Instantiate(effectDie, skullTransform.position, Quaternion.identity);
 
-        OnDieAnmationFinished();
+        //몬스터 삭제 
+        Destroy(gameObject);
+
+        Instantiate(dropfood, transform.position + Vector3.up * 0.5f, Quaternion.identity);
     }
-
-
     /// <summary>
     /// 피격시 몬스터 몸에서 번쩍번쩍 효과를 준다
     /// </summary>
@@ -395,11 +395,7 @@ public class WolfCtrl : MonoBehaviour
         }
         else
         {
-            //몬스터 죽음 이벤트 
-            Instantiate(effectDie, skullTransform.position, Quaternion.identity);
 
-            //몬스터 삭제 
-            Destroy(gameObject);
         }
     }
 
