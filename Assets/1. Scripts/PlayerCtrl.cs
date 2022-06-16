@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public float hungryvalue = 100f;
-
-    private float time = 1f; //몇 초마다 
-    private float curtime; //타이머
+    public float hpvalue = 100f;
 
     public float watervalue = 100f;
+
+    public float hungryvalue = 100f;
+    private float time = 1f; //몇 초마다 
+    private float curtime; //타이머
 
     //캐릭터 직선 이동 속도 (걷기)
     public float walkMoveSpd = 2.0f;
@@ -77,7 +78,7 @@ public class PlayerCtrl : MonoBehaviour
     //다음 연걔 공격 활성화를 위한 flag
     public bool flagNextAttack = false;
 
-
+    private PlayerBar playerbar = null;
     //[Header("전투관련")]
     ////공격할 때만 켜지게
     //public TrailRenderer AtkTrailRenderer = null;
@@ -130,6 +131,8 @@ public class PlayerCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        playerbar = GetComponent<PlayerBar>();
         //캐릭터 이동 
         Move();
         // Debug.Log(getNowVelocityVal());
@@ -551,6 +554,7 @@ public class PlayerCtrl : MonoBehaviour
         {
             case PlayerAttackState.atkStep_1:
                 playAnimationByClip(animationClipAtkStep_1);
+                playerState = PlayerState.None;
                 break;
             //case PlayerAttackState.atkStep_2:
             //    playAnimationByClip(animationClipAtkStep_2);

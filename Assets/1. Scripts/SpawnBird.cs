@@ -43,7 +43,7 @@ public class SpawnBird : MonoBehaviour
 
         //생성할 새로운 몬스터를 Instantiate로 clone을 만든다.
         GameObject newMonster = Instantiate(monsterSpawner, vecSpawn, Quaternion.identity);
-        monsterValue += 1;
+        MonsterValue += 1;
 
         //몬스터 목록에 새로운 몬스터를 추가
         monsters.Add(newMonster);
