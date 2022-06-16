@@ -147,7 +147,7 @@ public class WolfCtrl : MonoBehaviour
         if (targetCharactor == null)
         {
             posTarget = new Vector3(skullTransform.position.x + Random.Range(-10f, 10f),
-                                    skullTransform.position.y + 1000f,
+                                    skullTransform.position.y + 1f,
                                     skullTransform.position.z + Random.Range(-10f, 10f)
                 );
             Ray ray = new Ray(posTarget, Vector3.down);
@@ -156,7 +156,8 @@ public class WolfCtrl : MonoBehaviour
             {
                 posTarget.y = infoRayCast.point.y;
             }
-            skullState = SkullState.Move;
+            
+            //skullState = SkullState.Move;
         }
         else
         {
@@ -213,7 +214,6 @@ public class WolfCtrl : MonoBehaviour
                     {
                         //공격상태로 변경합니.
                         skullState = SkullState.Atk;
-
                         //여기서 끝냄
                         return;
                     }
@@ -226,6 +226,7 @@ public class WolfCtrl : MonoBehaviour
                 break;
             default:
                 break;
+
 
         }
 
@@ -251,14 +252,16 @@ public class WolfCtrl : MonoBehaviour
     /// <returns></returns>
     IEnumerator setWait()
     {
+        Debug.Log("Wolf wait");
         //해골 상태를 대기 상태로 바꿈
         skullState = SkullState.Wait;
         //대기하는 시간이 오래되지 않게 설정
-        float timeWait = Random.Range(1f, 3f);
+        float timeWait = Random.Range(0.5f,3);
         //대기 시간을 넣어 준.
         yield return new WaitForSeconds(timeWait);
         //대기 후 다시 준비 상태로 변경
         skullState = SkullState.Idle;
+
     }
 
     /// <summary>
@@ -365,6 +368,8 @@ public class WolfCtrl : MonoBehaviour
     }
     IEnumerator DieDelay()
     {
+        int randomfood = Random.Range(1, 5);
+        Debug.Log(randomfood);
         yield return new WaitForSeconds(DelaySecond);
         //몬스터 죽음 이벤트 
         Instantiate(effectDie, skullTransform.position, Quaternion.identity);
@@ -372,7 +377,12 @@ public class WolfCtrl : MonoBehaviour
         //몬스터 삭제 
         Destroy(gameObject);
 
-        Instantiate(dropfood, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+        if(randomfood==2)
+        {
+            Instantiate(dropfood, transform.position + Vector3.up * 0.5f, Quaternion.identity);
+        }
+        
+
     }
     /// <summary>
     /// 피격시 몬스터 몸에서 번쩍번쩍 효과를 준다

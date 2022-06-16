@@ -2197,7 +2197,7 @@ MonoBehaviour:
   food: []
   DelaySecond: 0.6
   skullState: 1
-  spdMove: 1
+  spdMove: 7
   runAwaySpd: 15
   targetCharactor: {fileID: 0}
   targetTransform: {fileID: 0}

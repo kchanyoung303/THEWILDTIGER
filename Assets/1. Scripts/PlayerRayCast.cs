@@ -8,41 +8,83 @@ public class PlayerRayCast : MonoBehaviour
     private bool pickupActivated = false;  // æ∆¿Ã≈€ Ω¿µÊ ∞°¥…«“Ω√ True 
     public Text actiontext;
     RaycastHit hit;
+    private PlayerCtrl playctrl = null;
     private void Update()
     {
         DestroyBox();
-
+        DrinkWater();
+        playctrl = GetComponent<PlayerCtrl>();
     }
-    void DestroyBox()
-    {
 
-        Debug.DrawRay(this.transform.position+Vector3.up*0.5f, this.transform.forward * 5f, Color.red);
-        if (Physics.Raycast(this.transform.position+Vector3.up*0.5f, this.transform.forward, out hit, 5f))
+    void DrinkWater()
+    {
+        Ray ray = new Ray(this.transform.position - Vector3.forward * 1.5f + Vector3.up * 0.5f,(this.transform.forward-this.transform.up));
+        Debug.DrawRay(this.transform.position -Vector3.forward*1.5f+ Vector3.up *0.5f, (this.transform.forward - this.transform.up) * 1f, Color.blue);
+        if(Physics.Raycast(ray,out hit,1f))
+        {
+            if(hit.transform.CompareTag("Water"))
             {
-            if (hit.transform.CompareTag("Item"))
-            {
-                ItemInfoAppear();
-                if (Input.GetKeyDown(KeyCode.E))
+                ItemInfoAppear(2);
+                if(Input.GetKeyDown(KeyCode.E))
                 {
-                    Destroy(hit.transform.gameObject);
-                    ItemInfoDisappear();
+                    if(playctrl.watervalue>80f)
+                    {
+                        playctrl.watervalue = 100f;
+                    }
+                    else
+                    {
+                        playctrl.watervalue += 80f;
+                    }
+
+                    ItemInfoAppear(2);
                 }
             }
         }
         else
         {
-            ItemInfoDisappear();
+            ItemInfoDisappear(2);
+        }
+    }
+    void DestroyBox()
+    {
+        Ray ray = new Ray(this.transform.position + Vector3.up * 0.5f, this.transform.forward);
+        Debug.DrawRay(this.transform.position+Vector3.up*0.5f, this.transform.forward * 5f, Color.red);
+        if (Physics.Raycast(ray, out hit, 5f))
+            {
+            if (hit.transform.CompareTag("Item"))
+            {
+                ItemInfoAppear(1);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Destroy(hit.transform.gameObject);
+                    ItemInfoDisappear(1);
+                }
+            }
+        }
+        else
+        {
+            ItemInfoDisappear(1);
         }
 
 
     }
-    private void ItemInfoAppear()
+    private void ItemInfoAppear(int value)
     {
         pickupActivated = true;
         actiontext.gameObject.SetActive(true);
-        actiontext.text = "æ∆¿Ã≈€ »πµÊ " + "<color=yellow>" + "(E)" + "</color>";
+
+        switch(value)
+        {
+            case 1:
+                actiontext.text = "æ∆¿Ã≈€ »πµÊ " + "<color=yellow>" + "E" + "</color>";
+                break;
+            case 2:
+                actiontext.text = "π∞ ∏∂Ω√±‚ " + "<color=blue>" + "E" + "</color>";
+                break;
+        }    
+
     }
-    private void ItemInfoDisappear()
+    private void ItemInfoDisappear(int value)
     {
         pickupActivated = false;
         actiontext.gameObject.SetActive(false);

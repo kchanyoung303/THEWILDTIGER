@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
+    public float hungryvalue = 100f;
+
+    private float time = 1f; //몇 초마다 
+    private float curtime; //타이머
+
+    public float watervalue = 100f;
+
     //캐릭터 직선 이동 속도 (걷기)
     public float walkMoveSpd = 2.0f;
 
@@ -143,6 +150,17 @@ public class PlayerCtrl : MonoBehaviour
 
         //공격관련 컴포넌트 제어
         AtkComponentCtrl();
+
+        minusWater();
+    }
+    void minusWater()
+    {
+        curtime += Time.deltaTime;
+        if (time <= curtime)
+        {
+            watervalue -= 1f;
+            curtime = 0f;
+        }
     }
 
     void GetDamege(int Damege)
@@ -258,11 +276,11 @@ public class PlayerCtrl : MonoBehaviour
 
             //현재  재백터 크기 속도
             GUILayout.Label("현재백터 크기 속도 : " + vecNowVelocity.magnitude.ToString(), labelStyle);
-
-
-
+        GUILayout.Label("현재 수분 : " + watervalue.ToString(), labelStyle);
         //}
-        GUILayout.Label("현재 HP : " + hp.ToString(), labelStyle);
+        GUILayout.Label("현재 HP : " + hp, labelStyle);
+
+        GUILayout.Label("수분 감소 시간 : " + curtime.ToString(), labelStyle);
     }
     /// <summary>
     /// 캐릭터 몸통 벡터 방향 함수

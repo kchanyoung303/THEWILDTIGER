@@ -138,7 +138,7 @@ public class GuGuCtrl : MonoBehaviour
         if (targetCharactor == null)
         {
             posTarget = new Vector3(skullTransform.position.x + Random.Range(-10f, 10f),
-                                    skullTransform.position.y + 1000f,
+                                    skullTransform.position.y + 1f,
                                     skullTransform.position.z + Random.Range(-10f, 10f)
                 );
             Ray ray = new Ray(posTarget, Vector3.down);
@@ -204,6 +204,7 @@ public class GuGuCtrl : MonoBehaviour
                     //만약에 움직이는 동안 해골이 목표로 한 지점 보다 작으 
                     if (distance.magnitude < AtkRange)
                     {
+                        StartCoroutine(setWait());
                         //여기서 끝냄
                         return;
                     }
@@ -242,6 +243,7 @@ public class GuGuCtrl : MonoBehaviour
     {
         //해골 상태를 대기 상태로 바꿈
         skullState = SkullState.Wait;
+        spd = spdMove;
         //대기하는 시간이 오래되지 않게 설정
         float timeWait = Random.Range(1f, 3f);
         //대기 시간을 넣어 준.
@@ -272,8 +274,9 @@ public class GuGuCtrl : MonoBehaviour
                 break;
             //죽었을 때
             case SkullState.Die:
+                StartCoroutine("DieDelay");
                 //죽을 때도 애니메이션 실행
- 
+
                 break;
             default:
                 break;
@@ -338,7 +341,7 @@ public class GuGuCtrl : MonoBehaviour
                 skullAnimation.CrossFade(DieAnimClip.name);
                 skullState = SkullState.Die;
 
-                StartCoroutine("DieDelay");
+
 
             }
         }

@@ -9,6 +9,7 @@ TagManager:
   - lb_perchTarget
   - PlayerAtk
   - Item
+  - Water
   layers:
   - Default
   - TransparentFX

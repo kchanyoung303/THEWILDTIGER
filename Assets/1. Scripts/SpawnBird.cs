@@ -10,11 +10,14 @@ public class SpawnBird : MonoBehaviour
     //생성활 몬스터들 담아놓기
     public List<GameObject> monsters = new List<GameObject>();
 
+    private int MonsterValue=0;
+
+   
     //생성할 몬스터 최대수
     public int spawnMaxCnt = 50;
 
     //생성할 몬스터 랜덤 좌표 (x,z)위치
-    float rndPos = 50f;
+    public float rndPos;
 
     void Spawn()
     {
@@ -25,7 +28,7 @@ public class SpawnBird : MonoBehaviour
         }
 
         //생성할 위치를 지정한다. 초기 높이만 1000 나머지 .x,z는 랜덤 
-        Vector3 vecSpawn = new Vector3(Random.Range(-rndPos, rndPos), 1000f, Random.Range(-rndPos, rndPos));
+        Vector3 vecSpawn = new Vector3(this.transform.position.x+Random.Range(-rndPos, rndPos), 5f, this.transform.position.z+Random.Range(-rndPos, rndPos));
 
         //생성할 임시 높이에서 아래방향으로 Raycast를 통해 지형까지 높이 구하기
         Ray ray = new Ray(vecSpawn, Vector3.down);
@@ -40,6 +43,7 @@ public class SpawnBird : MonoBehaviour
 
         //생성할 새로운 몬스터를 Instantiate로 clone을 만든다.
         GameObject newMonster = Instantiate(monsterSpawner, vecSpawn, Quaternion.identity);
+        monsterValue += 1;
 
         //몬스터 목록에 새로운 몬스터를 추가
         monsters.Add(newMonster);
@@ -48,6 +52,6 @@ public class SpawnBird : MonoBehaviour
     private void Start()
     {
         //반복적으로 몬스터를 만든다 InvokeRepeating
-        InvokeRepeating("Spawn", 3f, 5f);
+        InvokeRepeating("Spawn", 6f, 5f);
     }
 }
