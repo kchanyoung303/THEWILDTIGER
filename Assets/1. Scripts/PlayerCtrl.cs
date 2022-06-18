@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviour
 {
+    private bool pickupActivated = false;  // 아이템 습득 가능할시 True 
+    public Text actiontext;
+    RaycastHit hit;
+    private Item item = null;
     public float hpvalue = 100f;
+    public int AtkDamege=10;
 
     public float watervalue = 100f;
 
     public float hungryvalue = 100f;
-    private float time = 1f; //몇 초마다 
-    private float curtime; //타이머
+    private float Watertime = 1f; //몇 초마다 
+    private float Hugrytime = 2f;
+    private float Watercurtime; //타이머
+    private float Hugrycurtime;
 
     //캐릭터 직선 이동 속도 (걷기)
     public float walkMoveSpd = 2.0f;
@@ -95,6 +103,7 @@ public class PlayerCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         //CharacterController 캐싱
         controllerCharacter = GetComponent<CharacterController>();
 
@@ -132,6 +141,11 @@ public class PlayerCtrl : MonoBehaviour
     void Update()
     {
 
+        Debug.DrawRay(this.transform.position + Vector3.up * 0.5f, this.transform.forward * 5f, Color.red);
+        EatBird();
+        EatWolf();
+        DrinkWater();
+        item = GetComponent<Item>();
         playerbar = GetComponent<PlayerBar>();
         //캐릭터 이동 
         Move();
@@ -155,14 +169,24 @@ public class PlayerCtrl : MonoBehaviour
         AtkComponentCtrl();
 
         minusWater();
+        minusHungry();
     }
     void minusWater()
     {
-        curtime += Time.deltaTime;
-        if (time <= curtime)
+        Watercurtime += Time.deltaTime;
+        if (Watertime <= Watercurtime&&watervalue>0f)
         {
             watervalue -= 1f;
-            curtime = 0f;
+            Watercurtime = 0f;
+        }
+    }
+    void minusHungry()
+    {
+        Hugrycurtime += Time.deltaTime;
+        if(Hugrytime <= Hugrycurtime&&hungryvalue>0f)
+        {
+            hungryvalue -= 1f;
+            Hugrycurtime = 0f;
         }
     }
 
@@ -231,6 +255,11 @@ public class PlayerCtrl : MonoBehaviour
 
     }
 
+    public void EatNMeat()
+    {
+        watervalue += GetComponent<Item>().Watervalue;
+        hungryvalue += GetComponent<Item>().Hugryvalue;
+    }
 
     /// <summary>
     /// 현재 내 케릭터 이동 속도 가져오는 함  
@@ -265,25 +294,26 @@ public class PlayerCtrl : MonoBehaviour
     {
         var labelStyle = new GUIStyle();
         labelStyle.fontSize = 15;
-        labelStyle.normal.textColor = Color.black;
+        labelStyle.normal.textColor = Color.red;
 
         //if (controllerCharacter != null && controllerCharacter.velocity != Vector3.zero)
         //{
 
             //캐릭터 현재 속도
             float _getVelocitySpd = getNowVelocityVal();
-            GUILayout.Label("현재속도 : " + _getVelocitySpd.ToString(), labelStyle);
+            GUILayout.Label("걷기 속도 : " + walkMoveSpd.ToString(), labelStyle);
 
             //현재 캐릭터 방향 + 크기
-            GUILayout.Label("현재벡터 : " + controllerCharacter.velocity.ToString(), labelStyle);
+            GUILayout.Label("달리기 최대 속도 : " + runMoveSpd.ToString(), labelStyle);
 
             //현재  재백터 크기 속도
             GUILayout.Label("현재백터 크기 속도 : " + vecNowVelocity.magnitude.ToString(), labelStyle);
+        GUILayout.Label("현재 배고픔 : " + hungryvalue.ToString(), labelStyle);
         GUILayout.Label("현재 수분 : " + watervalue.ToString(), labelStyle);
         //}
         GUILayout.Label("현재 HP : " + hp, labelStyle);
 
-        GUILayout.Label("수분 감소 시간 : " + curtime.ToString(), labelStyle);
+        GUILayout.Label("수분 감소 시간 : " + Watercurtime, labelStyle);
     }
     /// <summary>
     /// 캐릭터 몸통 벡터 방향 함수
@@ -600,5 +630,150 @@ public class PlayerCtrl : MonoBehaviour
                 AtkCapsuleCollider.enabled = false;
                 break;
         }
+    }
+    void DrinkWater()
+    {
+        Ray ray = new Ray(this.transform.position - Vector3.forward * 1.5f + Vector3.up * 0.5f, (this.transform.forward - this.transform.up));
+        Debug.DrawRay(this.transform.position - Vector3.forward * 1.5f + Vector3.up * 0.5f, (this.transform.forward - this.transform.up) * 1f, Color.blue);
+        if (Physics.Raycast(ray, out hit, 1f))
+        {
+            if (hit.transform.CompareTag("Water"))
+            {
+                ItemInfoAppear(2);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+
+                    WaterPath();
+                    ItemInfoAppear(2);
+                }
+            }
+        }
+        else
+        {
+            ItemInfoDisappear(2);
+        }
+    }
+    void WaterPath()
+    {
+        if (watervalue > 80f)
+        {
+            watervalue = 100f;
+        }
+        else
+        {
+            watervalue += 80f;
+        }
+    }
+    void EatBird()
+    {
+        Ray ray = new Ray(this.transform.position + Vector3.up * 0.5f, this.transform.forward);
+        if (Physics.Raycast(ray, out hit, 5f))
+        {
+
+            if (hit.transform.CompareTag("BirdFood"))
+            {
+                ItemInfoAppear(1);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Destroy(hit.transform.gameObject);
+                    ItemInfoDisappear(1);
+                    BirdFoodPath();
+                    Debug.Log("Birdpath");
+
+                }
+            }
+        }
+        else
+        {
+            ItemInfoDisappear(1);
+        }
+
+
+    }
+    void EatWolf()
+    {
+        Ray ray = new Ray(this.transform.position + Vector3.up * 0.5f, this.transform.forward);
+        if (Physics.Raycast(ray, out hit, 5f))
+        {
+
+            if (hit.transform.CompareTag("WolfFood"))
+            {
+                ItemInfoAppear(1);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Destroy(hit.transform.gameObject);
+                    ItemInfoDisappear(1);
+                    WolfFoodPath();
+
+                }
+            }
+        }
+        else
+        {
+            ItemInfoDisappear(1);
+        }
+    }
+
+    void BirdFoodPath()
+    {
+        if (hungryvalue > 90f)
+        {
+            hungryvalue = 100f;
+
+        }
+        else
+        {
+            hungryvalue += 10f;
+        }
+        if (watervalue >= 0)
+        {
+            watervalue -= 10f;
+        }
+    }
+
+    void WolfFoodPath()
+    {
+        Debug.Log("WolfPath");
+        int randomStat = Random.Range(1, 3);
+
+        switch(randomStat)
+        {
+            case 1:
+                runMoveSpd += 1f;
+                break;
+            case 2:
+                if(runMoveSpd > walkMoveSpd+3f)
+                {
+                    walkMoveSpd += 1f;
+                }
+                else
+                {
+                    runMoveSpd += 1f;
+                }
+                break;
+            
+        }
+    }
+
+    private void ItemInfoAppear(int value)
+    {
+        pickupActivated = true;
+        actiontext.gameObject.SetActive(true);
+
+        switch (value)
+        {
+            case 1:
+                actiontext.text = "아이템 획득 " + "<color=yellow>" + "E" + "</color>";
+                break;
+            case 2:
+                actiontext.text = "물 마시기 " + "<color=blue>" + "E" + "</color>";
+                break;
+        }
+
+    }
+    private void ItemInfoDisappear(int value)
+    {
+        pickupActivated = false;
+        actiontext.gameObject.SetActive(false);
     }
 }

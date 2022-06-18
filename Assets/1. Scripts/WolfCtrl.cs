@@ -8,6 +8,8 @@ public class WolfCtrl : MonoBehaviour
     //해골 상태
     public GameObject dropfood;
     public List<GameObject> food = new List<GameObject>();
+    public float waterValue;
+    public float hungryValue;
     public enum SkullState { None, Idle, Move, Wait, GoTarget, Atk, Damage, Die }
     public float DelaySecond = 1.2f;
 
@@ -48,12 +50,8 @@ public class WolfCtrl : MonoBehaviour
 
     private Tweener effectTweener = null;
     private SkinnedMeshRenderer skinnedMeshRenderer = null;
-
-
-    void OnAtkAnmationFinished()
-    {
-        Debug.Log("Atk Animation finished");
-    }
+    //무기에 있는 콜라이더 캐싱
+    public CapsuleCollider AtkCapsuleCollider = null;
 
     void OnDmgAnmationFinished()
     {
@@ -102,7 +100,6 @@ public class WolfCtrl : MonoBehaviour
         skullAnimation[DieAnimClip.name].layer = 10;
 
         //공격 애니메이션 이벤트 추가
-        OnAnimationEvent(AtkAnimClip, "OnAtkAnmationFinished");
         OnAnimationEvent(DamageAnimClip, "OnDmgAnmationFinished");
 
         //스킨매쉬 캐싱
@@ -138,7 +135,6 @@ public class WolfCtrl : MonoBehaviour
         CkState();
         AnimationCtrl();
     }
-
     /// <summary>
     /// 해골 상태가 대기 일 때 동작 
     /// </summary>
@@ -287,6 +283,7 @@ public class WolfCtrl : MonoBehaviour
             //공격할 때
             case SkullState.Atk:
                 Invoke("AtkDelay", 0.2f);
+
                 break;
             //죽었을 때
             case SkullState.Die:
@@ -305,6 +302,13 @@ public class WolfCtrl : MonoBehaviour
     void AtkDelay()
     {
         skullAnimation.CrossFade(AtkAnimClip.name);
+        StartCoroutine(AtkAnimationEnd());
+    }
+
+    IEnumerator AtkAnimationEnd()
+    {
+        yield return new WaitForSeconds(1f);
+        Debug.Log("AtkAnimationEnded");
     }
     void OnCkTarget(GameObject target)
     {
@@ -365,10 +369,12 @@ public class WolfCtrl : MonoBehaviour
 
             }
         }
+
     }
+
     IEnumerator DieDelay()
     {
-        int randomfood = Random.Range(1, 5);
+        int randomfood = Random.Range(1, 3);
         Debug.Log(randomfood);
         yield return new WaitForSeconds(DelaySecond);
         //몬스터 죽음 이벤트 

@@ -9,10 +9,13 @@ public class PlayerRayCast : MonoBehaviour
     public Text actiontext;
     RaycastHit hit;
     private PlayerCtrl playctrl = null;
+    private Item item = null;
+
     private void Update()
     {
         DestroyBox();
         DrinkWater();
+        item = GetComponent<Item>();
         playctrl = GetComponent<PlayerCtrl>();
     }
 
@@ -27,15 +30,8 @@ public class PlayerRayCast : MonoBehaviour
                 ItemInfoAppear(2);
                 if(Input.GetKeyDown(KeyCode.E))
                 {
-                    if(playctrl.watervalue>80f)
-                    {
-                        playctrl.watervalue = 100f;
-                    }
-                    else
-                    {
-                        playctrl.watervalue += 80f;
-                    }
 
+                    WaterPath();
                     ItemInfoAppear(2);
                 }
             }
@@ -45,19 +41,33 @@ public class PlayerRayCast : MonoBehaviour
             ItemInfoDisappear(2);
         }
     }
+    void WaterPath()
+    {
+        if (playctrl.watervalue > 80f)
+        {
+            playctrl.watervalue = 100f;
+        }
+        else
+        {
+            playctrl.watervalue += 80f;
+        }
+    }
     void DestroyBox()
     {
         Ray ray = new Ray(this.transform.position + Vector3.up * 0.5f, this.transform.forward);
         Debug.DrawRay(this.transform.position+Vector3.up*0.5f, this.transform.forward * 5f, Color.red);
         if (Physics.Raycast(ray, out hit, 5f))
             {
-            if (hit.transform.CompareTag("Item"))
+            
+            if (hit.transform.CompareTag("BirdFood")||hit.transform.CompareTag("WolfFood"))
             {
                 ItemInfoAppear(1);
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     Destroy(hit.transform.gameObject);
                     ItemInfoDisappear(1);
+                    BirdFoodPath();
+
                 }
             }
         }
@@ -68,6 +78,41 @@ public class PlayerRayCast : MonoBehaviour
 
 
     }
+
+    void BirdFoodPath()
+    {
+        if (playctrl.hungryvalue > 90f)
+        {
+            playctrl.hungryvalue = 100f;
+
+        }
+        else
+        {
+            playctrl.hungryvalue += 10f;
+        }
+        if (playctrl.watervalue >= 0)
+        {
+            playctrl.watervalue -= 10f;
+        }
+    }
+    void WolfFoodPath()
+    {
+        if (playctrl.hungryvalue > 80f)
+        {
+            playctrl.hungryvalue = 100f;
+
+        }
+        else
+        {
+            playctrl.hungryvalue += 20f;
+        }
+        if (playctrl.watervalue >= 0)
+        {
+            playctrl.watervalue -= 10f;
+        }
+    }
+
+
     private void ItemInfoAppear(int value)
     {
         pickupActivated = true;
