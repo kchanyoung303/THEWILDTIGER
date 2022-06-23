@@ -23,6 +23,7 @@ public class GuGuCtrl : MonoBehaviour
     public float spdMove = 1f;
     public float runAwaySpd = 15f;
     //해골이 본 타겟
+    public GameObject Detector = null;
     public GameObject targetCharactor = null;
     //해골이 본 타겟 위치정보 (매번 안 찾을려고)
     public Transform targetTransform = null;
@@ -245,10 +246,11 @@ public class GuGuCtrl : MonoBehaviour
         skullState = SkullState.Wait;
         spd = spdMove;
         //대기하는 시간이 오래되지 않게 설정
-        float timeWait = Random.Range(1f, 3f);
+        float timeWait = Random.Range(1f, 5f);
         //대기 시간을 넣어 준.
         yield return new WaitForSeconds(timeWait);
         //대기 후 다시 준비 상태로 변경
+        Detector.gameObject.SetActive(true);
         skullState = SkullState.Idle;
     }
 

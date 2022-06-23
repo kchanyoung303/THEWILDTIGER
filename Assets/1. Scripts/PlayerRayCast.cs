@@ -9,13 +9,11 @@ public class PlayerRayCast : MonoBehaviour
     public Text actiontext;
     RaycastHit hit;
     private PlayerCtrl playctrl = null;
-    private Item item = null;
 
     private void Update()
     {
         DestroyBox();
         DrinkWater();
-        item = GetComponent<Item>();
         playctrl = GetComponent<PlayerCtrl>();
     }
 

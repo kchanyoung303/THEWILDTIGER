@@ -12,6 +12,8 @@ TagManager:
   - Water
   - WolfFood
   - BirdFood
+  - Enemy
+  - Detector
   layers:
   - Default
   - TransparentFX

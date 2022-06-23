@@ -8,7 +8,6 @@ public class PlayerCtrl : MonoBehaviour
     private bool pickupActivated = false;  // 아이템 습득 가능할시 True 
     public Text actiontext;
     RaycastHit hit;
-    private Item item = null;
     public float hpvalue = 100f;
     public int AtkDamege=10;
 
@@ -29,7 +28,7 @@ public class PlayerCtrl : MonoBehaviour
     //캐릭터 회전 이동 속도 
     public float rotateMoveSpd = 100.0f;
 
-    //캐릭터 회전 방향으로 몸을 돌리는 속도
+    //캐릭터 회전 방향으로 몸을 돌리는 속도 
     public float rotateBodySpd = 2.0f;
 
     //캐릭터 이동 속도 증가 값
@@ -56,7 +55,7 @@ public class PlayerCtrl : MonoBehaviour
     //캐릭터 멈춤 변수 플래그
     private bool stopMove = false;
 
-    public float hp = 3f;
+    public float hp = 10f;
 
     [Header("애니메이션 속성")]
     public AnimationClip animationClipIdle = null;
@@ -93,6 +92,7 @@ public class PlayerCtrl : MonoBehaviour
 
     //무기에 있는 콜라이더 캐싱
     public CapsuleCollider AtkCapsuleCollider = null;
+
 
 
     //[Header("스킬관련")]
@@ -145,7 +145,6 @@ public class PlayerCtrl : MonoBehaviour
         EatBird();
         EatWolf();
         DrinkWater();
-        item = GetComponent<Item>();
         playerbar = GetComponent<PlayerBar>();
         //캐릭터 이동 
         Move();
@@ -190,9 +189,13 @@ public class PlayerCtrl : MonoBehaviour
         }
     }
 
-    void GetDamege(int Damege)
+    public void GetDamege(float Damege)
     {
         hp -= Damege;
+        if(hp<=0)
+        {
+            Debug.Log("Die");
+        }
     }
     /// <summary>
     /// 이동함수 입니다 캐릭터
@@ -255,11 +258,6 @@ public class PlayerCtrl : MonoBehaviour
 
     }
 
-    public void EatNMeat()
-    {
-        watervalue += GetComponent<Item>().Watervalue;
-        hungryvalue += GetComponent<Item>().Hugryvalue;
-    }
 
     /// <summary>
     /// 현재 내 케릭터 이동 속도 가져오는 함  
@@ -293,7 +291,7 @@ public class PlayerCtrl : MonoBehaviour
     private void OnGUI()
     {
         var labelStyle = new GUIStyle();
-        labelStyle.fontSize = 15;
+        labelStyle.fontSize = 30;
         labelStyle.normal.textColor = Color.red;
 
         //if (controllerCharacter != null && controllerCharacter.velocity != Vector3.zero)
@@ -427,7 +425,7 @@ public class PlayerCtrl : MonoBehaviour
     void InputAttackCtrll()
     {
         //마우스 클릭을 하였느냐?
-        if (Input.GetMouseButton(0) == true)
+        if (Input.GetMouseButtonDown(0) == true)
         {
             Debug.Log("InputAttackCtrll : " + playerState);
             //플레이어가 공격상태?

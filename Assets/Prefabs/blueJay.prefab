@@ -2199,6 +2199,7 @@ MonoBehaviour:
   skullState: 1
   spdMove: 7
   runAwaySpd: 15
+  Detector: {fileID: 462161084487858224}
   targetCharactor: {fileID: 0}
   targetTransform: {fileID: 0}
   posTarget: {x: 0, y: 0, z: 0}
