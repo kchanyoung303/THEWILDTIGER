@@ -28,7 +28,7 @@ public class WolfCtrl : MonoBehaviour
  
     private Animation skullAnimation = null;
     private Transform skullTransform = null;
-    private PlayerCtrl playerctrl;
+    public GameObject EffectPosition = null;
     [Header("애니메이션 클립")]
     public AnimationClip IdleAnimClip = null;
     public AnimationClip MoveAnimClip = null;
@@ -36,11 +36,13 @@ public class WolfCtrl : MonoBehaviour
     public AnimationClip DamageAnimClip = null;
     public AnimationClip DieAnimClip = null;
 
+
     [Header("전투속성")]
     public float hp = 100;
     public float attackDamage;
     public float AtkRange = 1.5f;
     public GameObject effectDamage = null;
+    public GameObject AtkPlayerEffect = null;
     public GameObject effectDie = null;
 
     private Tweener effectTweener = null;
@@ -51,7 +53,7 @@ public class WolfCtrl : MonoBehaviour
     {
         Debug.Log("Dmg Animation finished");
     }
-  
+
 
 
     /// <summary>
@@ -71,12 +73,11 @@ public class WolfCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         skullState = SkullState.Idle;
 
+        
         skullAnimation = GetComponent<Animation>();
         skullTransform = GetComponent<Transform>();
-        playerctrl = GetComponent<PlayerCtrl>();
 
         skullAnimation[IdleAnimClip.name].wrapMode = WrapMode.Loop;
         skullAnimation[MoveAnimClip.name].wrapMode = WrapMode.Loop;
@@ -96,8 +97,10 @@ public class WolfCtrl : MonoBehaviour
     }
     public void OnAtkAnmationFinished()
     {
+        GameObject player = GameObject.Find("Player");
         Debug.Log("Atk Animation finished");
-        playerctrl.GetDamege(attackDamage);
+        player.GetComponent<PlayerCtrl>().GetDamege(attackDamage);
+        Instantiate(AtkPlayerEffect, EffectPosition.transform.position, Quaternion.identity);
 
     }
 

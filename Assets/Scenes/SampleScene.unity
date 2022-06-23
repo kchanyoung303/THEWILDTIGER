@@ -289,7 +289,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &385923131
 RectTransform:
   m_ObjectHideFlags: 0
@@ -309,7 +309,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -319, y: -167.4538}
+  m_AnchoredPosition: {x: -722, y: 497.68295}
   m_SizeDelta: {x: 442.6635, y: 21.5874}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &385923132
@@ -379,7 +379,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &411989566
 RectTransform:
   m_ObjectHideFlags: 0
@@ -399,7 +399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -319, y: -198}
+  m_AnchoredPosition: {x: -722, y: 467.13675}
   m_SizeDelta: {x: 442.6635, y: 21.5874}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &411989567
@@ -486,7 +486,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -622,7 +622,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1104,7 +1104,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &978649003
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1124,7 +1124,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -319, y: -231.13675}
+  m_AnchoredPosition: {x: -722, y: 434}
   m_SizeDelta: {x: 442.6635, y: 21.5874}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &978649004
@@ -1848,7 +1848,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6752,6 +6752,36 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1897396807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1897396808}
+  m_Layer: 0
+  m_Name: EffectPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1897396808
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897396807}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.02, y: 0.534, z: 0.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2071651099}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1939682472
 GameObject:
   m_ObjectHideFlags: 0
@@ -6910,10 +6940,18 @@ PrefabInstance:
       propertyPath: m_Animation
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2958356087635918589, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: m_Animations.Array.data[2]
+      value: 
+      objectReference: {fileID: 7400000, guid: 42e49c58c64716b49988eafd198f68e9, type: 2}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: pos
       value: 
       objectReference: {fileID: 1940832543}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: AtkAnimClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 42e49c58c64716b49988eafd198f68e9, type: 2}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: attackDamage
       value: 10
@@ -6930,6 +6968,14 @@ PrefabInstance:
       propertyPath: capsuleSize.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: EffectPosition
+      value: 
+      objectReference: {fileID: 1897396807}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: AtkPlayerEffect
+      value: 
+      objectReference: {fileID: 8460667080445658512, guid: a3e2c3406e02f2c4ba86cfb1604277bd, type: 3}
     - target: {fileID: 6551681636848035284, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: m_Height
       value: 0.19

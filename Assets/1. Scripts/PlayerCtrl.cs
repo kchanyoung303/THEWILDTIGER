@@ -191,7 +191,7 @@ public class PlayerCtrl : MonoBehaviour
 
     public void GetDamege(float Damege)
     {
-        hp -= Damege;
+        hp = hp - Damege;
         if(hp<=0)
         {
             Debug.Log("Die");
