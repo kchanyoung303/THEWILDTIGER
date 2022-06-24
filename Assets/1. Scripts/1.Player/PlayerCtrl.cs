@@ -11,9 +11,14 @@ public class PlayerCtrl : MonoBehaviour
     public float hpvalue = 100f;
     public int AtkDamege=10;
 
+
     public float watervalue = 100f;
+    public float water = 100f;
+
+    public float buffDamage = 5f;
 
     public float hungryvalue = 100f;
+    public float hungry = 100f;
     private float Watertime = 1f; //몇 초마다 
     private float Hugrytime = 2f;
     private float Watercurtime; //타이머
@@ -55,7 +60,7 @@ public class PlayerCtrl : MonoBehaviour
     //캐릭터 멈춤 변수 플래그
     private bool stopMove = false;
 
-    public float hp = 10f;
+    public float hp = 100f;
 
     [Header("애니메이션 속성")]
     public AnimationClip animationClipIdle = null;
@@ -93,6 +98,8 @@ public class PlayerCtrl : MonoBehaviour
     //무기에 있는 콜라이더 캐싱
     public CapsuleCollider AtkCapsuleCollider = null;
 
+    private WolfCtrl wolfctrl = null;
+
 
 
     //[Header("스킬관련")]
@@ -106,7 +113,7 @@ public class PlayerCtrl : MonoBehaviour
 
         //CharacterController 캐싱
         controllerCharacter = GetComponent<CharacterController>();
-
+        wolfctrl = GetComponent<WolfCtrl>();
         //Animation component 캐싱
         animationPlayer = GetComponent<Animation>();
         //Animation Component 자동 재생 끄기
@@ -173,18 +180,18 @@ public class PlayerCtrl : MonoBehaviour
     void minusWater()
     {
         Watercurtime += Time.deltaTime;
-        if (Watertime <= Watercurtime&&watervalue>0f)
+        if (Watertime <= Watercurtime&&water>0f)
         {
-            watervalue -= 1f;
+            water -= 1f;
             Watercurtime = 0f;
         }
     }
     void minusHungry()
     {
         Hugrycurtime += Time.deltaTime;
-        if(Hugrytime <= Hugrycurtime&&hungryvalue>0f)
+        if(Hugrytime <= Hugrycurtime&& hungry > 0f)
         {
-            hungryvalue -= 1f;
+            hungry -= 1f;
             Hugrycurtime = 0f;
         }
     }
@@ -306,8 +313,8 @@ public class PlayerCtrl : MonoBehaviour
 
             //현재  재백터 크기 속도
             GUILayout.Label("현재백터 크기 속도 : " + vecNowVelocity.magnitude.ToString(), labelStyle);
-        GUILayout.Label("현재 배고픔 : " + hungryvalue.ToString(), labelStyle);
-        GUILayout.Label("현재 수분 : " + watervalue.ToString(), labelStyle);
+        GUILayout.Label("현재 배고픔 : " + hungry.ToString(), labelStyle);
+        GUILayout.Label("현재 수분 : " + water.ToString(), labelStyle);
         //}
         GUILayout.Label("현재 HP : " + hp, labelStyle);
 
@@ -372,6 +379,7 @@ public class PlayerCtrl : MonoBehaviour
                 break;
         }
     }
+
 
     /// <summary>
     ///  현재 상태를 체크해주는 함수
@@ -653,13 +661,13 @@ public class PlayerCtrl : MonoBehaviour
     }
     void WaterPath()
     {
-        if (watervalue > 80f)
+        if (water > 80f)
         {
-            watervalue = 100f;
+            water = 100f;
         }
         else
         {
-            watervalue += 80f;
+            water += 80f;
         }
     }
     void EatBird()
@@ -714,18 +722,18 @@ public class PlayerCtrl : MonoBehaviour
 
     void BirdFoodPath()
     {
-        if (hungryvalue > 90f)
+        if (hungry > 90f)
         {
-            hungryvalue = 100f;
+            hungry = 100f;
 
         }
         else
         {
-            hungryvalue += 10f;
+            hungry += 10f;
         }
-        if (watervalue >= 0)
+        if (water >= 0)
         {
-            watervalue -= 10f;
+            water -= 10f;
         }
     }
 
@@ -737,16 +745,16 @@ public class PlayerCtrl : MonoBehaviour
         switch(randomStat)
         {
             case 1:
-                runMoveSpd += 1f;
+                runMoveSpd += 0.5f;
                 break;
             case 2:
                 if(runMoveSpd > walkMoveSpd+3f)
                 {
-                    walkMoveSpd += 1f;
+                    walkMoveSpd += 0.5f;
                 }
                 else
                 {
-                    runMoveSpd += 1f;
+                    runMoveSpd += 0.5f;
                 }
                 break;
             

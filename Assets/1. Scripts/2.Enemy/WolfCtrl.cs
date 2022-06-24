@@ -79,6 +79,7 @@ public class WolfCtrl : MonoBehaviour
         skullAnimation = GetComponent<Animation>();
         skullTransform = GetComponent<Transform>();
 
+
         skullAnimation[IdleAnimClip.name].wrapMode = WrapMode.Loop;
         skullAnimation[MoveAnimClip.name].wrapMode = WrapMode.Loop;
         skullAnimation[AtkAnimClip.name].wrapMode = WrapMode.Once;
@@ -100,7 +101,8 @@ public class WolfCtrl : MonoBehaviour
         GameObject player = GameObject.Find("Player");
         Debug.Log("Atk Animation finished");
         player.GetComponent<PlayerCtrl>().GetDamege(attackDamage);
-        Instantiate(AtkPlayerEffect, EffectPosition.transform.position, Quaternion.identity);
+        GameObject.Find("Player");
+        Instantiate(AtkPlayerEffect, player.transform.position, Quaternion.identity);
 
     }
 

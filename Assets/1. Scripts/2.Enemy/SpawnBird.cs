@@ -22,7 +22,7 @@ public class SpawnBird : MonoBehaviour
     void Spawn()
     {
         //몬스터 수가 생성할 몬스터 최대수 보다 크면 돌아가~
-        if (monsters.Count > spawnMaxCnt)
+        if (spawnMaxCnt<=MonsterValue)
         {
             return;
         }
