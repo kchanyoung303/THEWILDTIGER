@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class WolfCtrl : MonoBehaviour
 {
-    //해골 상태
+
     public GameObject dropfood;
     public List<GameObject> food = new List<GameObject>();
     public float waterValue;
@@ -13,24 +13,22 @@ public class WolfCtrl : MonoBehaviour
     public enum SkullState { None, Idle, Move, Wait, GoTarget, Atk, Damage, Die }
     public float DelaySecond = 1.2f;
 
-    //해골 기본 속성
+
     [Header("기본 속성")]
-    //해골 초기 상태
+
     public SkullState skullState = SkullState.None;
-    //해골 이동 속도
+
     public float spdMove = 1f;
-    //해골이 본 타겟
+
     public GameObject targetCharactor = null;
-    //해골이 본 타겟 위치정보 (매번 안 찾을려고)
+
     public Transform targetTransform = null;
-    //해골이 본 타겟 위치(매번 안 찾을려)
+
     public Vector3 posTarget = Vector3.zero;
-
-    //해골 애니메이션 컴포넌트 캐싱 
+ 
     private Animation skullAnimation = null;
-    //해골 트랜스폼 컴포넌트 캐싱
     private Transform skullTransform = null;
-
+    public GameObject EffectPosition = null;
     [Header("애니메이션 클립")]
     public AnimationClip IdleAnimClip = null;
     public AnimationClip MoveAnimClip = null;
@@ -38,19 +36,17 @@ public class WolfCtrl : MonoBehaviour
     public AnimationClip DamageAnimClip = null;
     public AnimationClip DieAnimClip = null;
 
+
     [Header("전투속성")]
-    //해골 체력
-    public int hp = 100;
-    //해골 공격 거리
+    public float hp = 100;
+    public float attackDamage;
     public float AtkRange = 1.5f;
-    //해골 피격 이펙트
     public GameObject effectDamage = null;
-    //해골 다이 이펙트
+    public GameObject AtkPlayerEffect = null;
     public GameObject effectDie = null;
 
     private Tweener effectTweener = null;
     private SkinnedMeshRenderer skinnedMeshRenderer = null;
-    //무기에 있는 콜라이더 캐싱
     public CapsuleCollider AtkCapsuleCollider = null;
 
     void OnDmgAnmationFinished()
@@ -67,13 +63,9 @@ public class WolfCtrl : MonoBehaviour
     /// <param name="funcName">함수명 </param>
     void OnAnimationEvent(AnimationClip clip, string funcName)
     {
-        //애니메이션 이벤트를 만들어 준다
         AnimationEvent retEvent = new AnimationEvent();
-        //애니메이션 이벤트에 호출 시킬 함수명
         retEvent.functionName = funcName;
-        //애니메이션 클립 끝나기 바로 직전에 호출
         retEvent.time = clip.length - 0.4f;
-        //위 내용을 이벤트에 추가 하여라
         clip.AddEvent(retEvent);
     }
 
@@ -81,40 +73,43 @@ public class WolfCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //처음 상태 대기상태
         skullState = SkullState.Idle;
 
-        //애니메이, 트랜스폼 컴포넌트 캐싱 : 쓸때마다 찾아 만들지 않게
+        
         skullAnimation = GetComponent<Animation>();
         skullTransform = GetComponent<Transform>();
 
-        //애니메이션 클립 재생 모드 비중
         skullAnimation[IdleAnimClip.name].wrapMode = WrapMode.Loop;
         skullAnimation[MoveAnimClip.name].wrapMode = WrapMode.Loop;
         skullAnimation[AtkAnimClip.name].wrapMode = WrapMode.Once;
         skullAnimation[DamageAnimClip.name].wrapMode = WrapMode.Once;
 
-        //애니메이션 블랜딩 위해 크게 올림
         skullAnimation[DamageAnimClip.name].layer = 10;
         skullAnimation[DieAnimClip.name].wrapMode = WrapMode.Once;
         skullAnimation[DieAnimClip.name].layer = 10;
 
-        //공격 애니메이션 이벤트 추가
+
         OnAnimationEvent(DamageAnimClip, "OnDmgAnmationFinished");
 
-        //스킨매쉬 캐싱
         skinnedMeshRenderer = this.skullTransform.Find("Wolf 1").GetComponent<SkinnedMeshRenderer>();
+
+        
+    }
+    public void OnAtkAnmationFinished()
+    {
+        GameObject player = GameObject.Find("Player");
+        Debug.Log("Atk Animation finished");
+        player.GetComponent<PlayerCtrl>().GetDamege(attackDamage);
+        Instantiate(AtkPlayerEffect, EffectPosition.transform.position, Quaternion.identity);
+
     }
 
-    /// <summary>
-    /// 해골 상태에 따라 동작을 제어하는 함수 
-    /// </summary>
     void CkState()
     {
         switch (skullState)
         {
             case SkullState.Idle:
-                //이동에 관련된 RayCast값
+
                 setIdle();
                 break;
             case SkullState.GoTarget:
@@ -135,9 +130,7 @@ public class WolfCtrl : MonoBehaviour
         CkState();
         AnimationCtrl();
     }
-    /// <summary>
-    /// 해골 상태가 대기 일 때 동작 
-    /// </summary>
+
     void setIdle()
     {
         if (targetCharactor == null)
@@ -161,9 +154,7 @@ public class WolfCtrl : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 해골 상태가 이동 일 때 동 
-    /// </summary>
+
     void setMove()
     {
         //출발점 도착점 두 벡터의 차이 
@@ -171,10 +162,10 @@ public class WolfCtrl : MonoBehaviour
         //어느 방향을 바라보고 가고 있느냐 
         Vector3 posLookAt = Vector3.zero;
 
-        //해골 상태
+        //상태
         switch (skullState)
         {
-            //해골이 돌아다니는 경우
+            // 돌아다니는 경우
             case SkullState.Move:
                 //만약 랜덤 위치 값이 제로가 아니면
                 if (posTarget != Vector3.zero)
@@ -249,7 +240,7 @@ public class WolfCtrl : MonoBehaviour
     IEnumerator setWait()
     {
         Debug.Log("Wolf wait");
-        //해골 상태를 대기 상태로 바꿈
+        //상태를 대기 상태로 바꿈
         skullState = SkullState.Wait;
         //대기하는 시간이 오래되지 않게 설정
         float timeWait = Random.Range(0.5f,3);
@@ -265,7 +256,7 @@ public class WolfCtrl : MonoBehaviour
     /// </summary>
     void AnimationCtrl()
     {
-        //해골의 상태에 따라서 애니메이션 적용
+        //상태에 따라서 애니메이션 적용
         switch (skullState)
         {
             //대기와 준비할 때 애니메이션 같.
@@ -283,7 +274,6 @@ public class WolfCtrl : MonoBehaviour
             //공격할 때
             case SkullState.Atk:
                 Invoke("AtkDelay", 0.2f);
-
                 break;
             //죽었을 때
             case SkullState.Die:
@@ -301,15 +291,9 @@ public class WolfCtrl : MonoBehaviour
     ///</summary>
     void AtkDelay()
     {
-        skullAnimation.CrossFade(AtkAnimClip.name);
-        StartCoroutine(AtkAnimationEnd());
+        this.skullAnimation.CrossFade(AtkAnimClip.name);
     }
 
-    IEnumerator AtkAnimationEnd()
-    {
-        yield return new WaitForSeconds(1f);
-        Debug.Log("AtkAnimationEnded");
-    }
     void OnCkTarget(GameObject target)
     {
         //목표 캐릭터에 파라메터로 검출된 오브젝트를 넣고 
