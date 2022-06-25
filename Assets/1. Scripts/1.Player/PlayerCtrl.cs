@@ -21,8 +21,10 @@ public class PlayerCtrl : MonoBehaviour
     public float hungry = 100f;
     private float Watertime = 1f; //몇 초마다 
     private float Hugrytime = 2f;
+    private float healingtime = 2f;
     private float Watercurtime; //타이머
     private float Hugrycurtime;
+    private float Healingcurtime;
 
     //캐릭터 직선 이동 속도 (걷기)
     public float walkMoveSpd = 2.0f;
@@ -176,6 +178,8 @@ public class PlayerCtrl : MonoBehaviour
 
         minusWater();
         minusHungry();
+        healingHP();
+
     }
     void minusWater()
     {
@@ -193,6 +197,16 @@ public class PlayerCtrl : MonoBehaviour
         {
             hungry -= 1f;
             Hugrycurtime = 0f;
+        }
+    } 
+
+    void healingHP()
+    {
+        Healingcurtime += Time.deltaTime;
+        if(healingtime<=Healingcurtime&&hp<100f)
+        {
+            hp += 1f;
+            Healingcurtime = 0f;
         }
     }
 
