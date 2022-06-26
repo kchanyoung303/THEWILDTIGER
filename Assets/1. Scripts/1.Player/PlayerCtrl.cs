@@ -181,6 +181,13 @@ public class PlayerCtrl : MonoBehaviour
         healingHP();
 
     }
+    void GameOver()
+    {
+        if(water<=0f||hungry<=0f||hp<=0f)
+        {
+            
+        }
+    }
     void minusWater()
     {
         Watercurtime += Time.deltaTime;
@@ -743,18 +750,18 @@ public class PlayerCtrl : MonoBehaviour
         }
         else
         {
-            hungry += 10f;
+            hungry += 30f;
         }
         if (water >= 0)
         {
-            water -= 10f;
+            water -= 30f;
         }
     }
 
     void WolfFoodPath()
     {
         Debug.Log("WolfPath");
-        int randomStat = Random.Range(1, 3);
+        int randomStat = Random.Range(1, 4);
 
         switch(randomStat)
         {
@@ -771,6 +778,12 @@ public class PlayerCtrl : MonoBehaviour
                     runMoveSpd += 0.5f;
                 }
                 break;
+            case 3:
+                this.gameObject.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+                break;
+            case 4:
+                AtkDamege += 5;
+                break;
             
         }
     }
@@ -783,10 +796,10 @@ public class PlayerCtrl : MonoBehaviour
         switch (value)
         {
             case 1:
-                actiontext.text = "æ∆¿Ã≈€ »πµÊ " + "<color=yellow>" + "E" + "</color>";
+                actiontext.text = "<color=white>"+"æ∆¿Ã≈€ »πµÊ "+"</color>" + "<color=yellow>" + "E" + "</color>";
                 break;
             case 2:
-                actiontext.text = "π∞ ∏∂Ω√±‚ " + "<color=blue>" + "E" + "</color>";
+                actiontext.text = "<color=white>" + "π∞ ∏∂Ω√±‚ " + "</color>" + "<color=blue>" + "E" + "</color>";
                 break;
         }
 

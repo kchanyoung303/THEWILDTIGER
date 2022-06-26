@@ -19,6 +19,8 @@ public class WolfCtrl : MonoBehaviour
     public SkullState skullState = SkullState.None;
 
     public float spdMove = 1f;
+    public float spdRun = 1f;
+    private float NowSpd;
 
     public GameObject targetCharactor = null;
 
@@ -75,7 +77,7 @@ public class WolfCtrl : MonoBehaviour
     {
         skullState = SkullState.Idle;
 
-        
+        NowSpd = spdMove;
         skullAnimation = GetComponent<Animation>();
         skullTransform = GetComponent<Transform>();
 
@@ -148,7 +150,7 @@ public class WolfCtrl : MonoBehaviour
                 posTarget.y = infoRayCast.point.y;
             }
             
-            //skullState = SkullState.Move;
+            skullState = SkullState.Move;
         }
         else
         {
@@ -196,6 +198,7 @@ public class WolfCtrl : MonoBehaviour
                 //목표 캐릭터가 있을 땟
                 if (targetCharactor != null)
                 {
+
                     //목표 위치에서 해골 있는 위치 차를 구하고
                     distance = targetCharactor.transform.position - skullTransform.position;
                     //만약에 움직이는 동안 해골이 목표로 한 지점 보다 작으 
@@ -226,10 +229,19 @@ public class WolfCtrl : MonoBehaviour
         direction = new Vector3(direction.x, 0f, direction.z);
 
         //이동량 방향 구하기
-        Vector3 amount = direction * spdMove * Time.deltaTime;
+
+
+
+
+
+
+            Vector3 amount = direction * NowSpd * Time.deltaTime;
+            skullTransform.Translate(amount, Space.World);
+
+
 
         //캐릭터 컨트롤이 아닌 트랜스폼으로 월드 좌표 이용하여 이동
-        skullTransform.Translate(amount, Space.World);
+
         //캐릭터 방향 정하기
         skullTransform.LookAt(posLookAt);
 
@@ -271,6 +283,7 @@ public class WolfCtrl : MonoBehaviour
             case SkullState.Move:
             case SkullState.GoTarget:
                 //이동 애니메이션 실행
+                NowSpd = spdRun;
                 skullAnimation.CrossFade(MoveAnimClip.name);
                 break;
             //공격할 때
@@ -314,7 +327,7 @@ public class WolfCtrl : MonoBehaviour
     {
         //해골과 캐릭터간의 위치 거리 
         float distance = Vector3.Distance(targetTransform.position, skullTransform.position); //무겁다
-
+        NowSpd = spdMove;
         //공격 거리보다 둘 간의 거리가 멀어 졌다면 
         if (distance > AtkRange + 0.5f)
         {
