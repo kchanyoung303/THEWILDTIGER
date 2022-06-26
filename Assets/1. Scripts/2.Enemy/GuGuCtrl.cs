@@ -7,6 +7,8 @@ using DG.Tweening;
 public class GuGuCtrl : MonoBehaviour
 {
     //«ÿ∞Ò ªÛ≈¬
+    public GameObject hudDamageText;
+    public Transform hudPos;
     public GameObject dropfood;
     public List<GameObject> food = new List<GameObject>();
     public enum SkullState { None, Idle, Move, Wait, runAwayTarget,Damage, Die }
@@ -325,6 +327,8 @@ public class GuGuCtrl : MonoBehaviour
         {
             //«ÿ∞Ò √º∑¬¿ª 10 ª©∞Ì 
             hp -= 10;
+            GameObject hudText = Instantiate(hudDamageText);
+            hudText.transform.position = hudPos.position;
             if (hp > 0)
             {
                 //««∞› ¿Ã∆Â∆Æ 

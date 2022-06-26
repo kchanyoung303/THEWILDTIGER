@@ -5,7 +5,8 @@ using DG.Tweening;
 
 public class WolfCtrl : MonoBehaviour
 {
-
+    public GameObject hudDamageText;
+    public Transform hudPos;
     public GameObject dropfood;
     public List<GameObject> food = new List<GameObject>();
     public float waterValue;
@@ -50,6 +51,8 @@ public class WolfCtrl : MonoBehaviour
     private Tweener effectTweener = null;
     private SkinnedMeshRenderer skinnedMeshRenderer = null;
     public CapsuleCollider AtkCapsuleCollider = null;
+    private PlayerCtrl playerctrl;
+    private GameObject player;
 
     void OnDmgAnmationFinished()
     {
@@ -75,6 +78,8 @@ public class WolfCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("Player");
+        playerctrl = player.GetComponent<PlayerCtrl>();
         skullState = SkullState.Idle;
 
         NowSpd = spdMove;
@@ -100,11 +105,11 @@ public class WolfCtrl : MonoBehaviour
     }
     public void OnAtkAnmationFinished()
     {
-        GameObject player = GameObject.Find("Player");
+
         Debug.Log("Atk Animation finished");
-        player.GetComponent<PlayerCtrl>().GetDamege(attackDamage);
-        GameObject.Find("Player");
-        Instantiate(AtkPlayerEffect, player.transform.position, Quaternion.identity);
+        playerctrl.GetComponent<PlayerCtrl>().GetDamege(attackDamage);
+
+        Instantiate(AtkPlayerEffect, playerctrl.transform.position, Quaternion.identity);
 
     }
 
@@ -347,7 +352,9 @@ public class WolfCtrl : MonoBehaviour
         if (other.gameObject.CompareTag("PlayerAtk") == true)
         {
             //«ÿ∞Ò √º∑¬¿ª 10 ª©∞Ì 
-            hp -= 10;
+            hp -= playerctrl.AtkDamege;
+            GameObject hudText = Instantiate(hudDamageText);
+            hudText.transform.position = hudPos.position;
             if (hp > 0)
             {
                 //««∞› ¿Ã∆Â∆Æ 
