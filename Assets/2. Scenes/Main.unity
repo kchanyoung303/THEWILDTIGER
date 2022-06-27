@@ -584,7 +584,7 @@ PrefabInstance:
     - target: {fileID: 2958356087635918589, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: m_Animations.Array.data[2]
       value: 
-      objectReference: {fileID: 7400000, guid: 42e49c58c64716b49988eafd198f68e9, type: 2}
+      objectReference: {fileID: 7400000, guid: 926c37663618d914d82f816711bc0a2d, type: 2}
     - target: {fileID: 3832589894404865716, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.9283608
@@ -622,8 +622,12 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: AtkAnimClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 926c37663618d914d82f816711bc0a2d, type: 2}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: attackDamage
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: capsuleSize.x
@@ -8727,7 +8731,7 @@ PrefabInstance:
     - target: {fileID: 2958356087635918589, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: m_Animations.Array.data[2]
       value: 
-      objectReference: {fileID: 7400000, guid: 42e49c58c64716b49988eafd198f68e9, type: 2}
+      objectReference: {fileID: 7400000, guid: 926c37663618d914d82f816711bc0a2d, type: 2}
     - target: {fileID: 3832589894404865716, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.9283608
@@ -8753,9 +8757,25 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: hp
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: pos
       value: 
       objectReference: {fileID: 1940832543}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: AtkRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: AtkAnimClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 926c37663618d914d82f816711bc0a2d, type: 2}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: attackDamage
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: capsuleSize.x
       value: 0
