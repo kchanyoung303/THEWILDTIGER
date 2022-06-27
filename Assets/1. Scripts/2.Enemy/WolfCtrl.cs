@@ -154,7 +154,7 @@ public class WolfCtrl : MonoBehaviour
             {
                 posTarget.y = infoRayCast.point.y;
             }
-            
+
             skullState = SkullState.Move;
         }
         else
@@ -262,7 +262,7 @@ public class WolfCtrl : MonoBehaviour
         //상태를 대기 상태로 바꿈
         skullState = SkullState.Wait;
         //대기하는 시간이 오래되지 않게 설정
-        float timeWait = Random.Range(0.5f,3);
+        float timeWait = Random.Range(0.5f,2);
         //대기 시간을 넣어 준.
         yield return new WaitForSeconds(timeWait);
         //대기 후 다시 준비 상태로 변경

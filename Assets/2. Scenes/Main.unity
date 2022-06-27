@@ -611,12 +611,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: hp
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: pos
       value: 
       objectReference: {fileID: 243008844}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: spdRun
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: AtkRange
       value: 5
@@ -627,7 +631,7 @@ PrefabInstance:
       objectReference: {fileID: 7400000, guid: 926c37663618d914d82f816711bc0a2d, type: 2}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: attackDamage
-      value: 15
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: capsuleSize.x
@@ -696,6 +700,14 @@ PrefabInstance:
     - target: {fileID: 8060968244363710980, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: m_Center.z
       value: 6.120249
+      objectReference: {fileID: 0}
+    - target: {fileID: 8791534261298159693, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8791534261298159693, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
@@ -8758,12 +8770,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: hp
-      value: 150
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: pos
       value: 
       objectReference: {fileID: 1940832543}
+    - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: spdRun
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: AtkRange
       value: 5
@@ -8774,7 +8790,7 @@ PrefabInstance:
       objectReference: {fileID: 7400000, guid: 926c37663618d914d82f816711bc0a2d, type: 2}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: attackDamage
-      value: 15
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 3983262968309018278, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: capsuleSize.x
@@ -8843,6 +8859,14 @@ PrefabInstance:
     - target: {fileID: 8060968244363710980, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
       propertyPath: m_Center.z
       value: 6.120249
+      objectReference: {fileID: 0}
+    - target: {fileID: 8791534261298159693, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8791534261298159693, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f8243bb353e5cb74481bb26fe62fd298, type: 3}

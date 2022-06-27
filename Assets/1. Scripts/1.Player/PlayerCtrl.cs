@@ -26,6 +26,8 @@ public class PlayerCtrl : MonoBehaviour
     private float Hugrycurtime;
     private float Healingcurtime;
 
+
+
     //캐릭터 직선 이동 속도 (걷기)
     public float walkMoveSpd = 2.0f;
 
@@ -91,6 +93,7 @@ public class PlayerCtrl : MonoBehaviour
 
     //다음 연걔 공격 활성화를 위한 flag
     public bool flagNextAttack = false;
+    private bool isatkdelay = false;
 
     private PlayerBar playerbar = null;
     //[Header("전투관련")]
@@ -327,19 +330,19 @@ public class PlayerCtrl : MonoBehaviour
 
             //캐릭터 현재 속도
             float _getVelocitySpd = getNowVelocityVal();
-            GUILayout.Label("걷기 속도 : " + walkMoveSpd.ToString(), labelStyle);
+        //    GUILayout.Label("걷기 속도 : " + walkMoveSpd.ToString(), labelStyle);
 
-            //현재 캐릭터 방향 + 크기
-            GUILayout.Label("달리기 최대 속도 : " + runMoveSpd.ToString(), labelStyle);
+        //    //현재 캐릭터 방향 + 크기
+        //    GUILayout.Label("달리기 최대 속도 : " + runMoveSpd.ToString(), labelStyle);
 
-            //현재  재백터 크기 속도
-            GUILayout.Label("현재백터 크기 속도 : " + vecNowVelocity.magnitude.ToString(), labelStyle);
-        GUILayout.Label("현재 배고픔 : " + hungry.ToString(), labelStyle);
-        GUILayout.Label("현재 수분 : " + water.ToString(), labelStyle);
-        //}
-        GUILayout.Label("현재 HP : " + hp, labelStyle);
+        //    //현재  재백터 크기 속도
+        //    GUILayout.Label("현재백터 크기 속도 : " + vecNowVelocity.magnitude.ToString(), labelStyle);
+        //GUILayout.Label("현재 배고픔 : " + hungry.ToString(), labelStyle);
+        //GUILayout.Label("현재 수분 : " + water.ToString(), labelStyle);
+        ////}
+        //GUILayout.Label("현재 HP : " + hp, labelStyle);
 
-        GUILayout.Label("수분 감소 시간 : " + Watercurtime, labelStyle);
+        //GUILayout.Label("수분 감소 시간 : " + Watercurtime, labelStyle);
     }
     /// <summary>
     /// 캐릭터 몸통 벡터 방향 함수
@@ -650,13 +653,24 @@ public class PlayerCtrl : MonoBehaviour
             case PlayerState.Attack:    
             case PlayerState.Skill:
                 //AtkTrailRenderer.enabled = true;
-                AtkCapsuleCollider.enabled = true;
+                if(isatkdelay == false)
+                {
+                    AtkCapsuleCollider.enabled = true;
+                    isatkdelay = true;
+                    StartCoroutine(AtkDelay());
+                }
+
                 break;
             default:
-                //AtkTrailRenderer.enabled = false;
+                ////AtkTrailRenderer.enabled = false;
                 AtkCapsuleCollider.enabled = false;
                 break;
         }
+    }
+    IEnumerator AtkDelay()
+    {
+        yield return new WaitForSeconds(0.8f);
+        isatkdelay = false;
     }
     void DrinkWater()
     {
