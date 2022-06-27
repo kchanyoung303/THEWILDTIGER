@@ -682,7 +682,7 @@ public class PlayerCtrl : MonoBehaviour
     }
     void WaterPath()
     {
-        if (water > 80f)
+        if (water > 19f)
         {
             water = 100f;
         }
@@ -732,6 +732,7 @@ public class PlayerCtrl : MonoBehaviour
                     ItemInfoDisappear(1);
                     WolfFoodPath();
 
+
                 }
             }
         }
@@ -743,7 +744,10 @@ public class PlayerCtrl : MonoBehaviour
 
     void BirdFoodPath()
     {
-        if (hungry > 90f)
+        Debug.Log("WolfPath");
+        int randomStat = Random.Range(1, 5);
+
+        if (hungry > 69f)
         {
             hungry = 100f;
 
@@ -755,6 +759,30 @@ public class PlayerCtrl : MonoBehaviour
         if (water >= 0)
         {
             water -= 30f;
+        }
+        switch (randomStat)
+        {
+            case 1:
+                runMoveSpd += 0.5f;
+                break;
+            case 2:
+                if (runMoveSpd > walkMoveSpd + 6f)
+                {
+                    walkMoveSpd += 0.5f;
+                }
+                else
+                {
+                    runMoveSpd += 0.5f;
+                }
+                break;
+            case 3:
+                hp += 10f;
+                this.gameObject.transform.localScale += new Vector3(0.25f, 0.25f, 0.25f);
+                break;
+            case 4:
+                AtkDamege += 5;
+                break;
+
         }
     }
 
