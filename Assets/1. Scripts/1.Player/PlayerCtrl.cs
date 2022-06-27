@@ -761,28 +761,29 @@ public class PlayerCtrl : MonoBehaviour
     void WolfFoodPath()
     {
         Debug.Log("WolfPath");
-        int randomStat = Random.Range(1, 4);
+        int randomStat = Random.Range(1, 5);
 
         switch(randomStat)
         {
             case 1:
-                runMoveSpd += 0.5f;
+                runMoveSpd += 1;
                 break;
             case 2:
-                if(runMoveSpd > walkMoveSpd+3f)
+                if(runMoveSpd > walkMoveSpd+6f)
                 {
-                    walkMoveSpd += 0.5f;
+                    walkMoveSpd += 1;
                 }
                 else
                 {
-                    runMoveSpd += 0.5f;
+                    runMoveSpd += 1;
                 }
                 break;
             case 3:
-                this.gameObject.transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+                hp += 10f;
+                this.gameObject.transform.localScale += new Vector3(0.5f, 0.5f, 0.5f);
                 break;
             case 4:
-                AtkDamege += 5;
+                AtkDamege += 10;
                 break;
             
         }

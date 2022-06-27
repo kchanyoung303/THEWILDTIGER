@@ -17,12 +17,20 @@ public class SceneS : MonoBehaviour
     void Update()
     {
         GameOver();
+        KingOver();
     }
     void GameOver()
     {
         if (playerctrl.hp <= 0f || playerctrl.water <= 0f || playerctrl.hungry <= 0f)
         {
             SceneManager.LoadScene("GameOver");
+        }
+    }
+    void KingOver()
+    {
+        if(playerctrl.AtkDamege>=100f)
+        {
+            SceneManager.LoadScene("KingOver");
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameOverToMain : MonoBehaviour
 {
 
-    public Button GameOverButton;
+    private Button GameOverButton;
     // Start is called before the first frame update
     void Start()
     {
