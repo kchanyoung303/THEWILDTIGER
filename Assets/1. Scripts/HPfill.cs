@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class HPfill : MonoBehaviour
 {
-    private PlayerCtrl playerctrl;
+
     public Slider hpBar;
     public Slider hungryBar;
     public Slider WaterBar;
-
+    private PlayerCtrl playerctrl;
     private GameObject player;
 
     void Start()

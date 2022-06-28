@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class WolfCtrl : MonoBehaviour
@@ -14,7 +15,7 @@ public class WolfCtrl : MonoBehaviour
     public enum SkullState { None, Idle, Move, Wait, GoTarget, Atk, Damage, Die }
     public float DelaySecond = 1.2f;
 
-
+    public Slider hpBar;
     [Header("기본 속성")]
 
     public SkullState skullState = SkullState.None;
@@ -41,7 +42,8 @@ public class WolfCtrl : MonoBehaviour
 
 
     [Header("전투속성")]
-    public float hp = 100;
+    public float hpvalue = 100f;
+    public float hp = 100f;
     public float attackDamage;
     public float AtkRange = 1.5f;
     public GameObject effectDamage = null;
@@ -136,8 +138,14 @@ public class WolfCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         CkState();
         AnimationCtrl();
+        HpBarUpdate();
+    }
+    void HpBarUpdate()
+    {
+        hpBar.value = (float)hp / (float)hpvalue;
     }
 
     void setIdle()
@@ -155,7 +163,7 @@ public class WolfCtrl : MonoBehaviour
                 posTarget.y = infoRayCast.point.y;
             }
 
-            skullState = SkullState.Move;
+            //skullState = SkullState.Move;
         }
         else
         {
@@ -353,13 +361,13 @@ public class WolfCtrl : MonoBehaviour
         {
             //해골 체력을 10 빼고 
             hp -= playerctrl.AtkDamege;
-            Instantiate(effectDamage, other.transform.position, Quaternion.identity);
+
             GameObject hudText = Instantiate(hudDamageText);
-            hudText.transform.position = hudPos.position;
+            hudText.transform.position = -hudPos.position;
             if (hp > 0)
             {
                 //피격 이펙트 
-
+                Instantiate(effectDamage, other.transform.position, Quaternion.identity);
 
                 //체력이 0 이상이면 피격 애니메이션을 연출 하고 
                 skullAnimation.CrossFade(DamageAnimClip.name);

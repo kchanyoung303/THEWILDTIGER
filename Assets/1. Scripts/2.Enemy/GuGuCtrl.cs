@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Holoville.HOTween;
 using DG.Tweening;
 
 public class GuGuCtrl : MonoBehaviour
 {
+    public Slider hpBar;
+    private PlayerCtrl playerctrl;
+    private GameObject player;
     //해골 상태
     public GameObject hudDamageText;
     public Transform hudPos;
@@ -45,6 +49,7 @@ public class GuGuCtrl : MonoBehaviour
 
     [Header("전투속성")]
     //해골 체력
+    public int hpvalue = 100;
     public int hp = 100;
     //해골 공격 거리
     public float AtkRange = 1.5f;
@@ -82,6 +87,9 @@ public class GuGuCtrl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        player = GameObject.Find("Player");
+        playerctrl = player.GetComponent<PlayerCtrl>();
         //처음 상태 대기상태
         skullState = SkullState.Idle;
 
@@ -132,7 +140,10 @@ public class GuGuCtrl : MonoBehaviour
         CkState();
         AnimationCtrl();
     }
-
+    void UpdateHpBar()
+    {
+        hpBar.value = (float)hp / (float)hpvalue;
+    }
     /// <summary>
     /// 해골 상태가 대기 일 때 동작 
     /// </summary>
@@ -203,7 +214,10 @@ public class GuGuCtrl : MonoBehaviour
                 if (targetCharactor != null)
                 {
                     //목표 위치에서 해골 있는 위치 차를 구하고
-                    distance = -targetCharactor.transform.position - skullTransform.position;
+                    distance = new Vector3(-targetCharactor.transform.position.x-transform.position.x,
+                                            //타겟이 높이 있을 경우가 있으니 y값 체크
+                                            skullTransform.position.y,
+                                            -targetCharactor.transform.position.z-transform.position.z);
                     //만약에 움직이는 동안 해골이 목표로 한 지점 보다 작으 
                     if (distance.magnitude < AtkRange)
                     {
@@ -236,6 +250,7 @@ public class GuGuCtrl : MonoBehaviour
         skullTransform.Translate(amount, Space.World);
         //캐릭터 방향 정하기
         skullTransform.LookAt(posLookAt);
+        spd = spdMove;
     }
 
     /// <summary>
@@ -326,7 +341,7 @@ public class GuGuCtrl : MonoBehaviour
         if (other.gameObject.CompareTag("PlayerAtk")==true)
         {
             //해골 체력을 10 빼고 
-            hp -= 10;
+            hp -= playerctrl.AtkDamege;
             GameObject hudText = Instantiate(hudDamageText);
             hudText.transform.position = hudPos.position;
             if (hp > 0)
