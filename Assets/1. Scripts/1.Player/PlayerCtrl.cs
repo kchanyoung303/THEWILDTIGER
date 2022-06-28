@@ -320,18 +320,19 @@ public class PlayerCtrl : MonoBehaviour
     {
         var labelStyle = new GUIStyle();
         labelStyle.fontSize = 30;
-        labelStyle.normal.textColor = Color.red;
+        labelStyle.normal.textColor = Color.white;
 
         //if (controllerCharacter != null && controllerCharacter.velocity != Vector3.zero)
         //{
 
             //캐릭터 현재 속도
             float _getVelocitySpd = getNowVelocityVal();
-        //    GUILayout.Label("걷기 속도 : " + walkMoveSpd.ToString(), labelStyle);
+        GUILayout.Label("걷기 속도 : " + walkMoveSpd.ToString(), labelStyle);
 
         //    //현재 캐릭터 방향 + 크기
-        //    GUILayout.Label("달리기 최대 속도 : " + runMoveSpd.ToString(), labelStyle);
+        GUILayout.Label("달리기 최대 속도 : " + runMoveSpd.ToString(), labelStyle);
 
+        GUILayout.Label("공격력 : " + AtkDamege.ToString(), labelStyle);
         //    //현재  재백터 크기 속도
         //    GUILayout.Label("현재백터 크기 속도 : " + vecNowVelocity.magnitude.ToString(), labelStyle);
         //GUILayout.Label("현재 배고픔 : " + hungry.ToString(), labelStyle);
