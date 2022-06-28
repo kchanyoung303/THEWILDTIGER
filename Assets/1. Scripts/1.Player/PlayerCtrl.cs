@@ -71,7 +71,6 @@ public class PlayerCtrl : MonoBehaviour
     public AnimationClip animationClipWalk = null;
     public AnimationClip animationClipRun = null;
     public AnimationClip animationClipAtkStep_1 = null;
-    public AnimationClip animationClipAtkStep_2 = null;
     //public AnimationClip animationClipAtkStep_3 = null;
     //public AnimationClip animationClipAtkStep_4 = null;
 
@@ -93,7 +92,7 @@ public class PlayerCtrl : MonoBehaviour
 
     //다음 연걔 공격 활성화를 위한 flag
     public bool flagNextAttack = false;
-    private bool isatkdelay = false;
+    public bool isatkdelay = false;
 
     private PlayerBar playerbar = null;
     //[Header("전투관련")]
@@ -134,7 +133,6 @@ public class PlayerCtrl : MonoBehaviour
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipWalk.name].wrapMode = WrapMode.Loop;
         animationPlayer[animationClipAtkStep_1.name].wrapMode = WrapMode.Once;
-        animationPlayer[animationClipAtkStep_2.name].wrapMode = WrapMode.Once;
         //animationPlayer[animationClipAtkStep_3.name].wrapMode = WrapMode.Once;
         //animationPlayer[animationClipAtkStep_4.name].wrapMode = WrapMode.Once;
 
@@ -142,7 +140,6 @@ public class PlayerCtrl : MonoBehaviour
 
         //이벤트 함수 지정 
         SetAnimationEvent(animationClipAtkStep_1, "OnPlayerAttackFinshed");
-        SetAnimationEvent(animationClipAtkStep_2, "OnPlayerAttackFinshed");
         //SetAnimationEvent(animationClipAtkStep_3, "OnPlayerAttackFinshed");
         //SetAnimationEvent(animationClipAtkStep_4, "OnPlayerAttackFinshed");
 
@@ -459,6 +456,8 @@ public class PlayerCtrl : MonoBehaviour
         //마우스 클릭을 하였느냐?
         if (Input.GetMouseButtonDown(0) == true)
         {
+            playerAttackState = PlayerAttackState.atkStep_1;
+            playerState = PlayerState.Attack;
             Debug.Log("InputAttackCtrll : " + playerState);
             //플레이어가 공격상태?
             if (playerState != PlayerState.Attack)
@@ -468,40 +467,6 @@ public class PlayerCtrl : MonoBehaviour
 
                 //공격상태 초기화
                 playerAttackState = PlayerAttackState.atkStep_1;
-            }
-            else
-            {
-                //플레이어 상태가 공격상태이고 공격 상태가 활성화 일때
-                //공격 상태에 따른 분류
-                switch (playerAttackState)
-                {
-                    case PlayerAttackState.atkStep_1:
-                        if (animationPlayer[animationClipAtkStep_1.name].normalizedTime > 0.01f)
-                        {
-                            flagNextAttack = true;
-                        }
-                        break;
-                    //case PlayerAttackState.atkStep_2:
-                    //    if (animationPlayer[animationClipAtkStep_2.name].normalizedTime > 0.05f)
-                    //    {
-                    //        flagNextAttack = true;
-                    //    }
-                    //    break;
-                    //case PlayerAttackState.atkStep_3:
-                    //    if (animationPlayer[animationClipAtkStep_3.name].normalizedTime > 0.5f)
-                    //    {
-                    //        flagNextAttack = true;
-                    //    }
-                    //    break;
-                    //case PlayerAttackState.atkStep_4:
-                    //    if (animationPlayer[animationClipAtkStep_4.name].normalizedTime > 0.5f)
-                    //    {
-                    //        flagNextAttack = true;
-                    //    }
-                    //    break;
-                    default:
-                        break;
-                }
             }
         }
 
@@ -515,9 +480,6 @@ public class PlayerCtrl : MonoBehaviour
                 playerAttackState = PlayerAttackState.atkStep_1;
                 flagNextAttack = false;
             }
-
-            //플레이어 상태를 스킬 상태로 변경 한다
-            playerState = PlayerState.Skill;
         }
     }
 
@@ -614,7 +576,6 @@ public class PlayerCtrl : MonoBehaviour
         {
             case PlayerAttackState.atkStep_1:
                 playAnimationByClip(animationClipAtkStep_1);
-                playerState = PlayerState.None;
                 break;
             //case PlayerAttackState.atkStep_2:
             //    playAnimationByClip(animationClipAtkStep_2);
@@ -669,7 +630,7 @@ public class PlayerCtrl : MonoBehaviour
     }
     IEnumerator AtkDelay()
     {
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.1f);
         isatkdelay = false;
     }
     void DrinkWater()

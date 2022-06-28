@@ -870,8 +870,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.408767, z: 3.7983634}
-  m_Center: {x: 0, y: 1.2298841, z: -0.2783587}
+  m_Size: {x: 1, y: 2.4087667, z: 3.2715464}
+  m_Center: {x: 0.000000003432259, y: 1.2298841, z: -0.54176706}
 --- !u!111 &2958356087635918589
 Animation:
   m_ObjectHideFlags: 0
@@ -923,7 +923,7 @@ MonoBehaviour:
   AtkAnimClip: {fileID: 7400000, guid: 42e49c58c64716b49988eafd198f68e9, type: 2}
   DamageAnimClip: {fileID: 7400000, guid: ed10b883a33b6574188ad7570f7ab315, type: 3}
   DieAnimClip: {fileID: 7400000, guid: abecad1478c146b468857b08761602b7, type: 3}
-  hp: 100
+  hp: 99
   attackDamage: 20
   AtkRange: 3
   effectDamage: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}

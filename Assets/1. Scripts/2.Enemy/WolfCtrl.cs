@@ -353,12 +353,13 @@ public class WolfCtrl : MonoBehaviour
         {
             //해골 체력을 10 빼고 
             hp -= playerctrl.AtkDamege;
+            Instantiate(effectDamage, other.transform.position, Quaternion.identity);
             GameObject hudText = Instantiate(hudDamageText);
             hudText.transform.position = hudPos.position;
             if (hp > 0)
             {
                 //피격 이펙트 
-                Instantiate(effectDamage, other.transform.position, Quaternion.identity);
+
 
                 //체력이 0 이상이면 피격 애니메이션을 연출 하고 
                 skullAnimation.CrossFade(DamageAnimClip.name);
