@@ -210,6 +210,7 @@ public class GuGuCtrl : MonoBehaviour
             //캐릭터를 향해서 가는 돌아다니는  경우
             case SkullState.runAwayTarget:
                 spd = runAwaySpd;
+
                 //목표 캐릭터가 있을 땟
                 if (targetCharactor != null)
                 {
@@ -287,9 +288,12 @@ public class GuGuCtrl : MonoBehaviour
                 break;
             //랜덤과 목표 이동할 때 애니메이션 같.
             case SkullState.Move:
+                skullAnimation.CrossFade(MoveAnimClip.name);
+                break;
             case SkullState.runAwayTarget:
                 //이동 애니메이션 실행
                 skullAnimation.CrossFade(MoveAnimClip.name);
+
                 break;
             //죽었을 때
             case SkullState.Die:
@@ -344,6 +348,7 @@ public class GuGuCtrl : MonoBehaviour
             hp -= playerctrl.AtkDamege;
             GameObject hudText = Instantiate(hudDamageText);
             hudText.transform.position = hudPos.position;
+            SoundManager.Instance.SetEffectSoundClip(0);    
             if (hp > 0)
             {
                 //피격 이펙트 
@@ -399,6 +404,7 @@ public class GuGuCtrl : MonoBehaviour
 
 
             skinnedMeshRenderer.material.DOColor(colorTo, 0f).OnComplete(OnDamageTweenFinished);
+
 
         }
         else

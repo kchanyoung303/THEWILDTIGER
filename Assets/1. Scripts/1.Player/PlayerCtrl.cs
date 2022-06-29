@@ -645,7 +645,7 @@ public class PlayerCtrl : MonoBehaviour
                 ItemInfoAppear(2);
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-
+                    SoundManager.Instance.SetEffectSoundClip(2);
                     WaterPath();
                     ItemInfoAppear(2);
                 }
@@ -681,6 +681,7 @@ public class PlayerCtrl : MonoBehaviour
                     Destroy(hit.transform.gameObject);
                     ItemInfoDisappear(1);
                     BirdFoodPath();
+                    SoundManager.Instance.SetEffectSoundClip(3);
                     Debug.Log("Birdpath");
 
                 }
@@ -707,7 +708,7 @@ public class PlayerCtrl : MonoBehaviour
                     Destroy(hit.transform.gameObject);
                     ItemInfoDisappear(1);
                     WolfFoodPath();
-
+                    SoundManager.Instance.SetEffectSoundClip(3);
 
                 }
             }

@@ -107,7 +107,7 @@ public class WolfCtrl : MonoBehaviour
     }
     public void OnAtkAnmationFinished()
     {
-
+        SoundManager.Instance.SetEffectSoundClip(4);
         Debug.Log("Atk Animation finished");
         playerctrl.GetComponent<PlayerCtrl>().GetDamege(attackDamage);
 
@@ -361,7 +361,7 @@ public class WolfCtrl : MonoBehaviour
         {
             //해골 체력을 10 빼고 
             hp -= playerctrl.AtkDamege;
-
+            SoundManager.Instance.SetEffectSoundClip(0);
             GameObject hudText = Instantiate(hudDamageText);
             hudText.transform.position = -hudPos.position;
             if (hp > 0)
@@ -393,6 +393,7 @@ public class WolfCtrl : MonoBehaviour
         Debug.Log(randomfood);
         yield return new WaitForSeconds(DelaySecond);
         //몬스터 죽음 이벤트 
+        SoundManager.Instance.SetEffectSoundClip(1);
         Instantiate(effectDie, skullTransform.position, Quaternion.identity);
 
         //몬스터 삭제 
